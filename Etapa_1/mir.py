@@ -2,6 +2,7 @@
 import sys
 import fnmatch
 import os
+import pickle
 
 # DEBUG = True
 DEBUG = False
@@ -29,6 +30,23 @@ def get_filelist(path):
     return files
 
 
+def build_reverse_index(files):
+    r_index = {}  # token : list of files
+    for c, fn in files:
+        tokens = get_tokens(fn)
+        for t in tokens:
+            if r_index.get(t) is None:
+                r_index[t] = [c]
+            else:
+                r_index[t].append(c)
+    return r_index
+
+
+def get_tokens(file):
+    tokens = set()
+    return tokens
+
+
 if __name__ == "__main__":
     if DEBUG:
         print(sys.argv)
@@ -51,4 +69,11 @@ if __name__ == "__main__":
 
     # Construct index
 
+    r_index = build_reverse_index(filelist)
+    ntokens = 0
+    vocab = []
+    print("Os {} documentos foram processados e produziram um total de "
+          "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
+          "Informações salva em {}/mir.pickle para carga via pickle."
+          .format(len(filelist), ntokens, len(r_index.keys()), directory))
     # print index
