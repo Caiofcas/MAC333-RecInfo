@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import chardet
 import sys
 import fnmatch
 import os
@@ -6,6 +7,16 @@ import pickle
 
 # DEBUG = True
 DEBUG = False
+
+# CODE FROM ALAIR ----------------------
+
+
+def GetFileEncoding(file_path):
+    """ Get the encoding of file_path using chardet package"""
+    with open(file_path, ’rb’) as f:
+        return chardet.detect(f.read())
+
+# END ----------------------------------
 
 
 def find_txt_files(path):
@@ -44,6 +55,16 @@ def build_reverse_index(files):
 
 def get_tokens(file):
     tokens = set()
+    enc = GetFileEncoding(file)
+    # encoding = enc[’encoding’]
+    confidence = float(enc[’confidence’])*100
+    print('% 5d % -10s % 4.1f % % % s' % (ifile, encoding, confidence, ListaDeArquivos[ifile])
+    if confidence < 63:
+        myerr='replace'
+    else:
+        myerr='strict'
+    with open(ListaDeArquivos[ifile], 'r', encoding=encoding, errors=myerr) as filehand:
+        pass
     return tokens
 
 
@@ -55,13 +76,13 @@ if __name__ == "__main__":
         print("Usage:\n\tpython mir.py <directory>\nOR\n\t./mir.py <directory>")
         exit(1)
 
-    directory = sys.argv[1]
+    directory=sys.argv[1]
     if DEBUG:
         print("Dir: {}".format(directory))
 
     # list all txt documents
 
-    filelist = get_filelist(directory)
+    filelist=get_filelist(directory)
     for c, fn in filelist:
         print("{} {}".format(c, fn))
 
@@ -69,9 +90,8 @@ if __name__ == "__main__":
 
     # Construct index
 
-    r_index = build_reverse_index(filelist)
-    ntokens = 0
-    vocab = []
+    r_index=build_reverse_index(filelist)
+    ntokens=0
     print("Os {} documentos foram processados e produziram um total de "
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
           "Informações salva em {}/mir.pickle para carga via pickle."
