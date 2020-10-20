@@ -4,19 +4,16 @@ import sys
 import fnmatch
 import os
 import pickle
+import re
 
 # DEBUG = True
 DEBUG = False
 
-# CODE FROM ALAIR ----------------------
-
 
 def GetFileEncoding(file_path):
     """ Get the encoding of file_path using chardet package"""
-    with open(file_path, ’rb’) as f:
+    with open(file_path, 'rb') as f:
         return chardet.detect(f.read())
-
-# END ----------------------------------
 
 
 def find_txt_files(path):
@@ -43,29 +40,40 @@ def get_filelist(path):
 
 def build_reverse_index(files):
     r_index = {}  # token : list of files
+    n_tokens = 0
     for c, fn in files:
-        tokens = get_tokens(fn)
+        tokens, n_tokens_file = get_tokens(fn)
+        n_tokens += n_tokens_file
         for t in tokens:
             if r_index.get(t) is None:
                 r_index[t] = [c]
             else:
                 r_index[t].append(c)
-    return r_index
+    return r_index, n_tokens
 
 
 def get_tokens(file):
     tokens = set()
     enc = GetFileEncoding(file)
-    # encoding = enc[’encoding’]
-    confidence = float(enc[’confidence’])*100
-    print('% 5d % -10s % 4.1f % % % s' % (ifile, encoding, confidence, ListaDeArquivos[ifile])
+    if DEBUG:
+        print("For file {}:\n{}".format(file, enc))
+
+    encoding = enc['encoding']
+    confidence = float(enc['confidence'])*100
+
     if confidence < 63:
-        myerr='replace'
+        myerr = 'replace'
     else:
-        myerr='strict'
-    with open(ListaDeArquivos[ifile], 'r', encoding=encoding, errors=myerr) as filehand:
-        pass
-    return tokens
+        myerr = 'strict'
+
+    n_tokens = 0
+    with open(file, 'r', encoding=encoding, errors=myerr) as handle:
+        for line in handle:
+            line_tokens = re.sub(r'([^\w\s]|\d|_)', ' ', line).split()
+            n_tokens += len(line_tokens)
+            for tok in line_tokens:
+                tokens.add(tok.lower())
+    return tokens, n_tokens
 
 
 if __name__ == "__main__":
@@ -76,13 +84,13 @@ if __name__ == "__main__":
         print("Usage:\n\tpython mir.py <directory>\nOR\n\t./mir.py <directory>")
         exit(1)
 
-    directory=sys.argv[1]
+    directory = sys.argv[1]
     if DEBUG:
         print("Dir: {}".format(directory))
 
     # list all txt documents
 
-    filelist=get_filelist(directory)
+    filelist = get_filelist(directory)
     for c, fn in filelist:
         print("{} {}".format(c, fn))
 
@@ -90,8 +98,8 @@ if __name__ == "__main__":
 
     # Construct index
 
-    r_index=build_reverse_index(filelist)
-    ntokens=0
+    r_index, ntokens = build_reverse_index(filelist)
+
     print("Os {} documentos foram processados e produziram um total de "
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
           "Informações salva em {}/mir.pickle para carga via pickle."
