@@ -100,8 +100,14 @@ if __name__ == "__main__":
 
     r_index, ntokens = build_reverse_index(filelist)
 
+    # Save index
+
+    picklefn = '{}/mir.pickle'.format(directory)
+    with open(picklefn, 'w+b') as picklefile:
+        pickler = pickle.Pickler(picklefile)
+        pickler.dump(r_index)
+
     print("Os {} documentos foram processados e produziram um total de "
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
-          "Informações salva em {}/mir.pickle para carga via pickle."
-          .format(len(filelist), ntokens, len(r_index.keys()), directory))
-    # print index
+          "Informações salva em {} para carga via pickle."
+          .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
