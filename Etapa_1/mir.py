@@ -23,10 +23,12 @@ def get_filelist(rootdir):
         for file in files:
             if DEBUG:
                 print(os.path.join(subdir, file))
-            filepath = subdir + os.sep + file
+            filepath = os.path.join(subdir, file)
 
             if filepath.endswith(".txt"):
-                filelist.append(filepath)
+                filelist.append(filepath.replace(rootdir+os.sep, ''))
+
+    filelist.sort(key=lambda x: x.rsplit(os.sep)[-1])
     return filelist
 
 
@@ -62,11 +64,12 @@ def get_tokens(fn, fileID, verborragic):
     return tokens, n_tokens
 
 
-def build_reverse_index(files, verborragic):
+def build_reverse_index(files, rootdir, verborragic):
     r_index = {}  # token : list of files
     n_tokens = 0
     for c, fn in enumerate(files):
-        tokens, n_tokens_file = get_tokens(fn, c, verborragic)
+        tokens, n_tokens_file = get_tokens(
+            os.path.join(rootdir, fn), c, verborragic)
         n_tokens += n_tokens_file
         for t in tokens:
             if r_index.get(t) is None:
@@ -88,8 +91,8 @@ if __name__ == "__main__":
                         help='print verborragic information for debugging purposes')
     args = parser.parse_args()
 
-    print(args)
     if DEBUG:
+        print(args)
         print("Dir: {}".format(args.dir))
 
     # list all txt documents
@@ -102,7 +105,7 @@ if __name__ == "__main__":
 
     # Construct index
 
-    r_index, ntokens = build_reverse_index(filelist, args.v)
+    r_index, ntokens = build_reverse_index(filelist, args.dir, args.v)
 
     # Save index
 
