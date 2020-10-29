@@ -17,32 +17,22 @@ def GetFileEncoding(file_path):
         return chardet.detect(f.read())
 
 
-def find_txt_files(path):
+def get_filelist(rootdir):
     filelist = []
+    for subdir, dirs, files in os.walk(rootdir):
+        for file in files:
+            # print os.path.join(subdir, file)
+            filepath = subdir + os.sep + file
 
-    for file in os.listdir(path):
-        file_path = path+'/'+file
-
-        if os.path.isdir(file_path):
-            filelist += find_txt_files(file_path)
-
-        elif fnmatch.fnmatch(file, '*.txt'):
-            filelist.append(file_path)
+            if filepath.endswith(".txt"):
+                filelist.append(filepath)
     return filelist
-
-
-def get_filelist(path):
-    files = find_txt_files(path)
-    files.sort(key=lambda x: x.rsplit('/')[-1])
-    for i in range(len(files)):
-        files[i] = (i, files[i])
-    return files
 
 
 def build_reverse_index(files):
     r_index = {}  # token : list of files
     n_tokens = 0
-    for c, fn in files:
+    for c, fn in enumerate(files):
         tokens, n_tokens_file = get_tokens(fn)
         n_tokens += n_tokens_file
         for t in tokens:
@@ -93,7 +83,7 @@ if __name__ == "__main__":
     # list all txt documents
 
     filelist = get_filelist(args.dir)
-    for c, fn in filelist:
+    for c, fn in enumerate(filelist):
         print("{} {}".format(c, fn))
 
     print("Foram encontrados {} documentos.".format(len(filelist)))
