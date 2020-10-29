@@ -21,7 +21,8 @@ def get_filelist(rootdir):
     filelist = []
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
-            # print os.path.join(subdir, file)
+            if DEBUG:
+                print os.path.join(subdir, file)
             filepath = subdir + os.sep + file
 
             if filepath.endswith(".txt"):
