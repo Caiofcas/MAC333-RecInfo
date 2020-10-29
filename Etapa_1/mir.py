@@ -5,6 +5,7 @@ import fnmatch
 import os
 import pickle
 import re
+import argparse
 
 # DEBUG = True
 DEBUG = False
@@ -80,17 +81,18 @@ if __name__ == "__main__":
     if DEBUG:
         print(sys.argv)
 
-    if len(sys.argv) < 2:
-        print("Usage:\n\tpython mir.py <directory>\nOR\n\t./mir.py <directory>")
-        exit(1)
+    parser = argparse.ArgumentParser(
+        description='Creates the reverse index for .txt files in a directory')
 
-    directory = sys.argv[1]
+    parser.add_argument('dir', help='directory to be processed')
+    args = parser.parse_args()
+
     if DEBUG:
-        print("Dir: {}".format(directory))
+        print("Dir: {}".format(args.dir))
 
     # list all txt documents
 
-    filelist = get_filelist(directory)
+    filelist = get_filelist(args.dir)
     for c, fn in filelist:
         print("{} {}".format(c, fn))
 
@@ -102,7 +104,7 @@ if __name__ == "__main__":
 
     # Save index
 
-    picklefn = '{}/mir.pickle'.format(directory)
+    picklefn = '{}/mir.pickle'.format(args.dir)
     with open(picklefn, 'w+b') as picklefile:
         pickler = pickle.Pickler(picklefile)
         pickler.dump(r_index)
