@@ -32,20 +32,22 @@ def get_filelist(rootdir):
     return filelist
 
 
-def get_tokens(fn, fileID, verborragic):
+def get_tokens(fn, fileID, rootdir, verborragic):
     tokens = set()
-    enc = GetFileEncoding(fn)
+    fn_path = os.path.join(rootdir, fn)
+
+    enc = GetFileEncoding(fn_path)
 
     encoding = enc['encoding']
     confidence = float(enc['confidence'])*100
 
     if verborragic:
         print(
-            "{} {} {} {} {}".format(
+            "{:5} {: <10} {:4.1f} {:6} {}".format(
                 fileID,
-                encoding,
+                str(encoding),
                 confidence,
-                os.stat(fn).st_size,
+                os.stat(fn_path).st_size,
                 fn))
         # print("For file {}:\n{}".format(file, enc))
 
@@ -55,7 +57,7 @@ def get_tokens(fn, fileID, verborragic):
         myerr = 'strict'
 
     n_tokens = 0
-    with open(fn, 'r', encoding=encoding, errors=myerr) as handle:
+    with open(fn_path, 'r', encoding=encoding, errors=myerr) as handle:
         for line in handle:
             line_tokens = re.sub(r'([^\w\s]|\d|_)', ' ', line).split()
             n_tokens += len(line_tokens)
@@ -67,15 +69,21 @@ def get_tokens(fn, fileID, verborragic):
 def build_reverse_index(files, rootdir, verborragic):
     r_index = {}  # token : list of files
     n_tokens = 0
+
+    if verborragic:
+        print('\nDebugging information:\n')
+
     for c, fn in enumerate(files):
-        tokens, n_tokens_file = get_tokens(
-            os.path.join(rootdir, fn), c, verborragic)
+        tokens, n_tokens_file = get_tokens(fn, c, rootdir, verborragic)
         n_tokens += n_tokens_file
         for t in tokens:
             if r_index.get(t) is None:
                 r_index[t] = [c]
             else:
                 r_index[t].append(c)
+
+    if verborragic:
+        print('\n')
     return r_index, n_tokens
 
 
