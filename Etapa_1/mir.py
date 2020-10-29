@@ -22,7 +22,7 @@ def get_filelist(rootdir):
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
             if DEBUG:
-                print os.path.join(subdir, file)
+                print(os.path.join(subdir, file))
             filepath = subdir + os.sep + file
 
             if filepath.endswith(".txt"):
@@ -30,28 +30,22 @@ def get_filelist(rootdir):
     return filelist
 
 
-def build_reverse_index(files):
-    r_index = {}  # token : list of files
-    n_tokens = 0
-    for c, fn in enumerate(files):
-        tokens, n_tokens_file = get_tokens(fn)
-        n_tokens += n_tokens_file
-        for t in tokens:
-            if r_index.get(t) is None:
-                r_index[t] = [c]
-            else:
-                r_index[t].append(c)
-    return r_index, n_tokens
-
-
-def get_tokens(file):
+def get_tokens(fn, fileID, verborragic):
     tokens = set()
-    enc = GetFileEncoding(file)
-    if DEBUG:
-        print("For file {}:\n{}".format(file, enc))
+    enc = GetFileEncoding(fn)
 
     encoding = enc['encoding']
     confidence = float(enc['confidence'])*100
+
+    if verborragic:
+        print(
+            "{} {} {} {} {}".format(
+                fileID,
+                encoding,
+                confidence,
+                os.stat(fn).st_size,
+                fn))
+        # print("For file {}:\n{}".format(file, enc))
 
     if confidence < 63:
         myerr = 'replace'
@@ -59,13 +53,27 @@ def get_tokens(file):
         myerr = 'strict'
 
     n_tokens = 0
-    with open(file, 'r', encoding=encoding, errors=myerr) as handle:
+    with open(fn, 'r', encoding=encoding, errors=myerr) as handle:
         for line in handle:
             line_tokens = re.sub(r'([^\w\s]|\d|_)', ' ', line).split()
             n_tokens += len(line_tokens)
             for tok in line_tokens:
                 tokens.add(tok.lower())
     return tokens, n_tokens
+
+
+def build_reverse_index(files, verborragic):
+    r_index = {}  # token : list of files
+    n_tokens = 0
+    for c, fn in enumerate(files):
+        tokens, n_tokens_file = get_tokens(fn, c, verborragic)
+        n_tokens += n_tokens_file
+        for t in tokens:
+            if r_index.get(t) is None:
+                r_index[t] = [c]
+            else:
+                r_index[t].append(c)
+    return r_index, n_tokens
 
 
 if __name__ == "__main__":
@@ -76,8 +84,11 @@ if __name__ == "__main__":
         description='Creates the reverse index for .txt files in a directory')
 
     parser.add_argument('dir', help='directory to be processed')
+    parser.add_argument('-v', action='store_true',
+                        help='print verborragic information for debugging purposes')
     args = parser.parse_args()
 
+    print(args)
     if DEBUG:
         print("Dir: {}".format(args.dir))
 
@@ -91,7 +102,7 @@ if __name__ == "__main__":
 
     # Construct index
 
-    r_index, ntokens = build_reverse_index(filelist)
+    r_index, ntokens = build_reverse_index(filelist, args.v)
 
     # Save index
 
