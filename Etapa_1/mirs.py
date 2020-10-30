@@ -14,6 +14,8 @@ if __name__ == "__main__":
                         help='Print tokens that match the regex passed')
     parser.add_argument('-R', type=re.compile,
                         help='Print tokens that DON\'T match the regex passed')
+    parser.add_argument('tokens', action="append", nargs='*',
+                        help='directory to be processed')
 
     args = parser.parse_args()
     print(args)
