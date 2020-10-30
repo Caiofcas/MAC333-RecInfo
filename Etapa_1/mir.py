@@ -10,6 +10,8 @@ import argparse
 # DEBUG = True
 DEBUG = False
 
+resplit = re.compile(r'[\W\d_\s]+')
+
 
 def GetFileEncoding(file_path):
     """ Get the encoding of file_path using chardet package"""
@@ -48,7 +50,8 @@ def get_tokens(fn, fileID, rootdir, verborragic):
                 str(encoding),
                 confidence,
                 os.stat(fn_path).st_size,
-                fn))
+                fn)
+        )
         # print("For file {}:\n{}".format(file, enc))
 
     if confidence < 63:
@@ -58,16 +61,22 @@ def get_tokens(fn, fileID, rootdir, verborragic):
 
     n_tokens = 0
     with open(fn_path, 'r', encoding=encoding, errors=myerr) as handle:
-        for line in handle:
-            line_tokens = re.sub(r'([^\w\s]|\d|_)', ' ', line).split()
-            n_tokens += len(line_tokens)
-            for tok in line_tokens:
-                tokens.add(tok.lower())
+
+        words_gen = (
+            word.lower()
+            for line in handle
+            for word in resplit.split(line)
+        )
+
+        for token in words_gen:
+            n_tokens += 1
+            tokens.add(token)
+
     return tokens, n_tokens, encoding
 
 
 def build_reverse_index(files, rootdir, verborragic):
-    r_index = {}  # token : list of files
+    r_index = {}  # token : list of fileIDs
     n_tokens = 0
     encoding_dic = {}
 
