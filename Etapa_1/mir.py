@@ -128,6 +128,7 @@ if __name__ == "__main__":
     r_index, ntokens, encoding_dic = build_reverse_index(
         filelist, args.dir, args.v)
 
+    del r_index[""]
     # Save index
 
     picklefn = '{}/mir.pickle'.format(args.dir)
