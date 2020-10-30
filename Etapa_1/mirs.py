@@ -84,6 +84,7 @@ if __name__ == "__main__":
             end_str = "Acima estão os {} tokens mais frequentes "\
                       "satisfazendo REGEX \"{}\".\n"\
                       .format(args.t, args.r.pattern)
+
         elif args.R is not None:
             counter_filtered = Counter(
                 {tok: counter[tok]
@@ -109,10 +110,12 @@ if __name__ == "__main__":
             end_str = "Acima estão os {} tokens mais frequentes NÃO "\
                       "satisfazendo REGEX \"{}\".\n"\
                       .format(args.t, args.R.pattern)
+
         else:
             counter_filtered = counter
             end_str = "Listados {} tokens, ordenados decrescentemente por freq. de documento(DF)".format(
                 len(top_tokens))
+
         top_tokens = counter_filtered.most_common(args.t)
         if DEBUG:
             print(top_tokens)
