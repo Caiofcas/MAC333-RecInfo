@@ -1,9 +1,30 @@
 import argparse
 import re
 import pickle
+from collections import Counter
 
 # DEBUG = True
 DEBUG = False
+
+
+def unpickle(rootdir):
+    picklefn = '{}/mir.pickle'.format(rootdir)
+
+    with open(picklefn, 'rb') as handle:
+        unpickler = pickle.Unpickler(handle)
+        validation_str = unpickler.load()
+        if DEBUG:
+            print(validation_str)
+        filelist = unpickler.load()
+        r_index = unpickler.load()
+        encoding_dic = unpickler.load()
+
+    if DEBUG:
+        print(filelist)
+        print(encoding_dic)
+
+    return filelist, r_index, encoding_dic
+
 
 if __name__ == "__main__":
 
@@ -25,16 +46,11 @@ if __name__ == "__main__":
     if DEBUG:
         print(args)
 
-    picklefn = '{}/mir.pickle'.format(args.dir)
+    filelist, r_index, enconding_dic = unpickle(args.dir)
     # print(picklefn)
-    with open(picklefn, 'rb') as handle:
-        unpickler = pickle.Unpickler(handle)
-        unpickler.load()
-        # print(obj)
-        filelist = unpickler.load()
-        r_index = unpickler.load()
-        enconding_dic = unpickler.load()
 
-    print(filelist)
-    # print(r_index)
-    print(enconding_dic)
+    tokens = [x for x in r_index.keys()]
+    tokens.sort()
+    counter = Counter({k: len(r_index[k]) for k in tokens})
+
+    print(counter.most_common(3))
