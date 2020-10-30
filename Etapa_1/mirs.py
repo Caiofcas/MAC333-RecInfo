@@ -67,38 +67,52 @@ if __name__ == "__main__":
 
             total = len(counter)
             matched = len(counter_filtered)
-            print(
-                "Palavras que satisfazem a REGEX \"{}\"\n"
-                "Total: {: >10d} Regex: {: >10d} Não regex: {: >10d} Razão: {:.3f}\n"
-                .format(
-                    args.r.pattern,
-                    total,
-                    matched,
-                    total - matched,
-                    (total - matched)/matched
-                )
-            )
+            not_matched = total - matched
+
+            print("Palavras que satisfazem a REGEX \"{}\""
+                  .format(args.r.pattern))
+            print("Total: {: >7d}"
+                  " Regex: {: >7d}"
+                  " Não regex: {: >7d}"
+                  " Razão: {:.3f}\n"
+                  .format(
+                      total,
+                      matched,
+                      not_matched,
+                      not_matched/matched)
+                  )
+            end_str = "Acima estão os {} tokens mais frequentes "\
+                      "satisfazendo REGEX \"{}\".\n"\
+                      .format(args.t, args.r.pattern)
         elif args.R is not None:
             counter_filtered = Counter(
                 {tok: counter[tok]
                     for tok in counter if not args.R.search(tok)}
             )
+
             total = len(counter)
-            matched = len(counter_filtered)
-            print(
-                "Palavras que NÃO satisfazem a REGEX \"{}\"\n"
-                "Total: {: >10d} Não regex: {: >10d} Regex: {: >10d} Razão: {:.3f}\n"
-                .format(
-                    args.R.pattern,
-                    total,
-                    matched,
-                    total - matched,
-                    (total - matched)/matched
-                )
-            )
+            not_matched = len(counter_filtered)
+            matched = total - not_matched
+
+            print("Palavras que NÃO satisfazem a REGEX \"{}\""
+                  .format(args.R.pattern))
+            print("Total: {: >7d}"
+                  " Não regex: {: >7d}"
+                  " Regex: {: >7d}"
+                  " Razão: {:.3f}\n"
+                  .format(
+                      total,
+                      not_matched,
+                      matched,
+                      matched/not_matched)
+                  )
+            end_str = "Acima estão os {} tokens mais frequentes NÃO "\
+                      "satisfazendo REGEX \"{}\".\n"\
+                      .format(args.t, args.R.pattern)
         else:
             counter_filtered = counter
-
+            end_str = "Listados {} tokens, ordenados decrescentemente por freq. de documento(DF)".format(
+                len(top_tokens))
         top_tokens = counter_filtered.most_common(args.t)
         if DEBUG:
             print(top_tokens)
@@ -108,6 +122,4 @@ if __name__ == "__main__":
         for tok, count in top_tokens:
             print('\t{}\t{: <10}\t{}'.format(count, tok, r_index[tok]))
 
-        print(
-            "Listados {} tokens, ordenados decrescentemente por"
-            " freq. de documento(DF)".format(len(top_tokens)))
+        print(end_str)
