@@ -23,13 +23,13 @@ def getArgs():
     return parser.parse_args()
 
 
-def GetFileEncoding(file_path):
+def getFileEncoding(file_path):
     """ Get the encoding of file_path using chardet package"""
     with open(file_path, 'rb') as f:
         return chardet.detect(f.read())
 
 
-def get_filelist(rootdir):
+def getFileList(rootdir):
     filelist = []
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
@@ -44,11 +44,11 @@ def get_filelist(rootdir):
     return filelist
 
 
-def get_tokens(fn, fileID, rootdir, verborragic):
+def getTokens(fn, fileID, rootdir, verborragic):
     tokens = set()
     fn_path = os.path.join(rootdir, fn)
 
-    enc = GetFileEncoding(fn_path)
+    enc = getFileEncoding(fn_path)
 
     encoding = enc['encoding']
     confidence = float(enc['confidence'])*100
@@ -62,7 +62,6 @@ def get_tokens(fn, fileID, rootdir, verborragic):
                 os.stat(fn_path).st_size,
                 fn)
         )
-        # print("For file {}:\n{}".format(file, enc))
 
     if confidence < 63:
         myerr = 'replace'
@@ -85,7 +84,7 @@ def get_tokens(fn, fileID, rootdir, verborragic):
     return tokens, n_tokens, encoding
 
 
-def build_reverse_index(files, rootdir, verborragic):
+def buildReverseIndex(files, rootdir, verborragic):
     r_index = {}  # token : list of fileIDs
     n_tokens = 0
     encoding_dic = {}
@@ -94,7 +93,7 @@ def build_reverse_index(files, rootdir, verborragic):
         print('\nDebugging information:\n')
 
     for c, fn in enumerate(files):
-        tokens, n_tokens_file, enc = get_tokens(fn, c, rootdir, verborragic)
+        tokens, n_tokens_file, enc = getTokens(fn, c, rootdir, verborragic)
         encoding_dic[fn] = enc
 
         n_tokens += n_tokens_file
@@ -121,7 +120,7 @@ if __name__ == "__main__":
 
     # list all txt documents
 
-    filelist = get_filelist(args.dir)
+    filelist = getFileList(args.dir)
     for c, fn in enumerate(filelist):
         print("{} {}".format(c, fn))
 
@@ -129,7 +128,7 @@ if __name__ == "__main__":
 
     # Construct index
 
-    r_index, ntokens, encoding_dic = build_reverse_index(
+    r_index, ntokens, encoding_dic = buildReverseIndex(
         filelist, args.dir, args.v)
 
     del r_index[""]
