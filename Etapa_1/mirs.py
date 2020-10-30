@@ -128,3 +128,26 @@ if __name__ == "__main__":
             print('\t{}\t{: <10}\t{}'.format(count, tok, r_index[tok]))
 
         print(end_str)
+
+    if args.tokens is not None:
+        print("Conjugação das listas de incidência dos {} termos seguintes".format(
+            len(args.tokens[0])))
+
+        print('\tDF\tTermo/Token\tLista de incidência com IDs dos arquivos')
+
+        args.tokens[0].sort(reverse=True)
+        for tok in args.tokens[0]:
+            print('\t{}\t{: <10}\t{}'.format(counter[tok], tok, r_index[tok]))
+
+        docs = [
+            (i, fn)
+            for i, fn in enumerate(filelist)
+            if all([
+                (i in r_index[tok]) for tok in args.tokens[0]
+            ])
+        ]
+
+        print("São {} os documentos com os {} termos".format(
+            len(docs), len(args.tokens[0])))
+        for i, fn in docs:
+            print("\t{}\t{}".format(i, fn))
