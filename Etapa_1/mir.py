@@ -120,6 +120,9 @@ if __name__ == "__main__":
 
     # list all txt documents
 
+    print("Lista de arquivos .txt encontrados na "
+          "sub-árvore do diretório: {}".format(args.dir))
+
     filelist = getFileList(args.dir)
     for c, fn in enumerate(filelist):
         print("{} {}".format(c, fn))
