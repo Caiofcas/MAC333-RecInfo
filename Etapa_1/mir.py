@@ -63,18 +63,21 @@ def get_tokens(fn, fileID, rootdir, verborragic):
             n_tokens += len(line_tokens)
             for tok in line_tokens:
                 tokens.add(tok.lower())
-    return tokens, n_tokens
+    return tokens, n_tokens, encoding
 
 
 def build_reverse_index(files, rootdir, verborragic):
     r_index = {}  # token : list of files
     n_tokens = 0
+    encoding_dic = {}
 
     if verborragic:
         print('\nDebugging information:\n')
 
     for c, fn in enumerate(files):
-        tokens, n_tokens_file = get_tokens(fn, c, rootdir, verborragic)
+        tokens, n_tokens_file, enc = get_tokens(fn, c, rootdir, verborragic)
+        encoding_dic[fn] = enc
+
         n_tokens += n_tokens_file
         for t in tokens:
             if r_index.get(t) is None:
@@ -84,7 +87,7 @@ def build_reverse_index(files, rootdir, verborragic):
 
     if verborragic:
         print('\n')
-    return r_index, n_tokens
+    return r_index, n_tokens, encoding_dic
 
 
 if __name__ == "__main__":
@@ -113,16 +116,20 @@ if __name__ == "__main__":
 
     # Construct index
 
-    r_index, ntokens = build_reverse_index(filelist, args.dir, args.v)
+    r_index, ntokens, encoding_dic = build_reverse_index(
+        filelist, args.dir, args.v)
 
     # Save index
 
     picklefn = '{}/mir.pickle'.format(args.dir)
     with open(picklefn, 'w+b') as picklefile:
         pickler = pickle.Pickler(picklefile)
+        pickler.dump('MIR 1.0')
+        pickler.dump(filelist)
         pickler.dump(r_index)
+        pickler.dump(encoding_dic)
 
     print("Os {} documentos foram processados e produziram um total de "
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
-          "Informações salva em {} para carga via pickle."
+          "Informações salvas em {} para carga via pickle."
           .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
