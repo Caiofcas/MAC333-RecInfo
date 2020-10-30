@@ -86,9 +86,6 @@ if __name__ == "__main__":
                       not_matched,
                       not_matched/matched)
                   )
-            end_str = "Acima estão os {} tokens mais frequentes "\
-                      "satisfazendo REGEX \"{}\"."\
-                      .format(args.t, args.r.pattern)
 
         elif args.R is not None:
             counter_filtered = Counter(
@@ -112,9 +109,6 @@ if __name__ == "__main__":
                       matched,
                       matched/not_matched)
                   )
-            end_str = "Acima estão os {} tokens mais frequentes NÃO "\
-                      "satisfazendo REGEX \"{}\"."\
-                      .format(args.t, args.R.pattern)
 
         else:
             counter_filtered = counter
@@ -130,15 +124,22 @@ if __name__ == "__main__":
             for i in r_index[tok]:
                 docs.add(i)
 
-        if end_str == '':
+        if args.r is not None:
+            print("Acima estão os {} tokens mais frequentes "
+                  "satisfazendo REGEX \"{}\"."
+                  .format(len(top_tokens), args.r.pattern))
+            print("Presente(s) em {} arquivo(s).\n".format(len(docs)))
+        elif args.R is not None:
+            print("Acima estão os {} tokens mais frequentes NÃO "
+                  "satisfazendo REGEX \"{}\"."
+                  .format(len(top_tokens), args.R.pattern))
+            print("Presente(s) em {} arquivo(s).\n".format(len(docs)))
+        else:
             print("Listados {} tokens, ordenados decrescentemente por freq. de documento(DF)".format(
                 len(top_tokens)))
-        else:
-            print(end_str)
-            print("Presente(s) em {} arquivo(s).".format(len(docs)))
 
     if args.tokens != [[]]:
-        print("Conjugação das listas de incidência dos {} termos seguintes".format(
+        print("Conjugação das listas de incidência dos {} termos seguintes.".format(
             len(args.tokens[0])))
 
         print('\tDF\tTermo/Token\tLista de incidência com IDs dos arquivos')
@@ -159,4 +160,4 @@ if __name__ == "__main__":
         print("São {} os documentos com os {} termos".format(
             len(docs), len(args.tokens[0])))
         for i, fn in docs:
-            print("\t{}\t{}".format(i, fn))
+            print("\t{:2d}\t{}".format(i, fn))
