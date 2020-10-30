@@ -112,7 +112,6 @@ if __name__ == "__main__":
 
         else:
             counter_filtered = counter
-            end_str = ''
 
         top_tokens = counter_filtered.most_common(args.t)
 
