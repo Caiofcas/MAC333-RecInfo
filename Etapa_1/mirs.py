@@ -87,7 +87,7 @@ if __name__ == "__main__":
                       not_matched/matched)
                   )
             end_str = "Acima estão os {} tokens mais frequentes "\
-                      "satisfazendo REGEX \"{}\".\n"\
+                      "satisfazendo REGEX \"{}\"."\
                       .format(args.t, args.r.pattern)
 
         elif args.R is not None:
@@ -113,24 +113,31 @@ if __name__ == "__main__":
                       matched/not_matched)
                   )
             end_str = "Acima estão os {} tokens mais frequentes NÃO "\
-                      "satisfazendo REGEX \"{}\".\n"\
+                      "satisfazendo REGEX \"{}\"."\
                       .format(args.t, args.R.pattern)
 
         else:
             counter_filtered = counter
-            end_str = "Listados {} tokens, ordenados decrescentemente por freq. de documento(DF)".format(
-                len(top_tokens))
+            end_str = ''
 
         top_tokens = counter_filtered.most_common(args.t)
 
         print('\tDF\tTermo/Token\tLista de incidência com IDs dos arquivos')
 
+        docs = set()
         for tok, count in top_tokens:
-            print('\t{}\t{: <10}\t{}'.format(count, tok, r_index[tok]))
+            print('\t{:2d}\t{: <10}\t{}'.format(count, tok, r_index[tok]))
+            for i in r_index[tok]:
+                docs.add(i)
 
-        print(end_str)
+        if end_str == '':
+            print("Listados {} tokens, ordenados decrescentemente por freq. de documento(DF)".format(
+                len(top_tokens)))
+        else:
+            print(end_str)
+            print("Presente(s) em {} arquivo(s).".format(len(docs)))
 
-    if args.tokens is not None:
+    if args.tokens != [[]]:
         print("Conjugação das listas de incidência dos {} termos seguintes".format(
             len(args.tokens[0])))
 
@@ -138,7 +145,8 @@ if __name__ == "__main__":
 
         args.tokens[0].sort(reverse=True)
         for tok in args.tokens[0]:
-            print('\t{}\t{: <10}\t{}'.format(counter[tok], tok, r_index[tok]))
+            print('\t{:2d}\t{: <10}\t{}'.format(
+                counter[tok], tok, r_index[tok]))
 
         docs = [
             (i, fn)
