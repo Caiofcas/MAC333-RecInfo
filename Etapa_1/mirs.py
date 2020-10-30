@@ -66,50 +66,43 @@ if __name__ == "__main__":
     if args.t is not None:
 
         if args.r is not None:
-            counter_filtered = Counter(
-                {tok: counter[tok] for tok in counter if args.r.search(tok)}
-            )
+            counter_filtered = Counter({
+                tok: counter[tok]
+                for tok in counter
+                if args.r.search(tok)
+            })
 
             total = len(counter)
             matched = len(counter_filtered)
             not_matched = total - matched
 
-            print("Palavras que satisfazem a REGEX \"{}\""
-                  .format(args.r.pattern))
-            print("Total: {: >7d}"
-                  " Regex: {: >7d}"
-                  " Não regex: {: >7d}"
-                  " Razão: {:.3f}\n"
+            print("Palavras que satisfazem a REGEX \"{}\"\n"
+                  "Total: {: >7d} Regex: {: >7d} "
+                  "Não regex: {: >7d} Razão: {:.3f}\n"
                   .format(
-                      total,
-                      matched,
-                      not_matched,
-                      not_matched/matched)
-                  )
-
+                      args.r.pattern,
+                      total, matched,
+                      not_matched, not_matched/matched
+                  ))
         elif args.R is not None:
-            counter_filtered = Counter(
-                {tok: counter[tok]
-                    for tok in counter if not args.R.search(tok)}
-            )
+            counter_filtered = Counter({
+                tok: counter[tok]
+                for tok in counter
+                if not args.R.search(tok)
+            })
 
             total = len(counter)
             not_matched = len(counter_filtered)
             matched = total - not_matched
 
-            print("Palavras que NÃO satisfazem a REGEX \"{}\""
-                  .format(args.R.pattern))
-            print("Total: {: >7d}"
-                  " Não regex: {: >7d}"
-                  " Regex: {: >7d}"
-                  " Razão: {:.3f}\n"
+            print("Palavras que NÃO satisfazem a REGEX \"{}\"\n"
+                  "Total: {: >7d} Não regex: {: >7d} "
+                  "Regex: {: >7d} Razão: {:.3f}\n"
                   .format(
-                      total,
-                      not_matched,
-                      matched,
-                      matched/not_matched)
-                  )
-
+                      args.R.pattern,
+                      total, not_matched,
+                      matched, matched/not_matched
+                  ))
         else:
             counter_filtered = counter
 
@@ -124,26 +117,29 @@ if __name__ == "__main__":
                 docs.add(i)
 
         if args.r is not None:
-            print("Acima estão os {} tokens mais frequentes "
-                  "satisfazendo REGEX \"{}\"."
-                  .format(len(top_tokens), args.r.pattern))
-            print("Presente(s) em {} arquivo(s).\n".format(len(docs)))
+            end_msg = "Acima estão os {} tokens mais ".format(len(top_tokens))
+            end_msg += "frequentes satisfazendo REGEX "
+            end_msg += "\"{}\". ".format(args.r.pattern)
+            end_msg += "Presente(s) em {} arquivo(s).".format(len(docs))
         elif args.R is not None:
-            print("Acima estão os {} tokens mais frequentes NÃO "
-                  "satisfazendo REGEX \"{}\"."
-                  .format(len(top_tokens), args.R.pattern))
-            print("Presente(s) em {} arquivo(s).\n".format(len(docs)))
+            end_msg = "Acima estão os {} tokens mais ".format(len(top_tokens))
+            end_msg += "frequentes NÃO satisfazendo REGEX "
+            end_msg += "\"{}\". ".format(args.R.pattern)
+            end_msg += "Presente(s) em {} arquivo(s).".format(len(docs))
         else:
-            print("Listados {} tokens, ordenados decrescentemente por freq. de documento(DF)".format(
-                len(top_tokens)))
+            end_msg = "Listados {} tokens, ".format(len(top_tokens))
+            end_msg += "ordenados decrescentemente por freq. de documento(DF)."
+
+        print(end_msg)
 
     if args.tokens != [[]]:
-        print("Conjugação das listas de incidência dos {} termos seguintes.".format(
-            len(args.tokens[0])))
+        print("\nConjugação das listas de incidência dos {} termos seguintes."
+              .format(len(args.tokens[0])))
 
         print('\tDF\tTermo/Token\tLista de incidência com IDs dos arquivos')
 
         args.tokens[0].sort(reverse=True)
+
         for tok in args.tokens[0]:
             print('\t{:2d}\t{: <10}\t{}'.format(
                 counter[tok], tok, r_index[tok]))
@@ -151,12 +147,13 @@ if __name__ == "__main__":
         docs = [
             (i, fn)
             for i, fn in enumerate(filelist)
-            if all([
+            if all((
                 (i in r_index[tok]) for tok in args.tokens[0]
-            ])
+            ))
         ]
 
-        print("São {} os documentos com os {} termos".format(
-            len(docs), len(args.tokens[0])))
+        print("São {} os documentos com os {} termos"
+              .format(len(docs), len(args.tokens[0])))
+
         for i, fn in docs:
             print("\t{:2d}\t{}".format(i, fn))
