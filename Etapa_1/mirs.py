@@ -1,6 +1,9 @@
 import argparse
 import re
+import pickle
 
+# DEBUG = True
+DEBUG = False
 
 if __name__ == "__main__":
 
@@ -18,4 +21,20 @@ if __name__ == "__main__":
                         help='directory to be processed')
 
     args = parser.parse_args()
-    print(args)
+
+    if DEBUG:
+        print(args)
+
+    picklefn = '{}/mir.pickle'.format(args.dir)
+    # print(picklefn)
+    with open(picklefn, 'rb') as handle:
+        unpickler = pickle.Unpickler(handle)
+        unpickler.load()
+        # print(obj)
+        filelist = unpickler.load()
+        r_index = unpickler.load()
+        enconding_dic = unpickler.load()
+
+    print(filelist)
+    # print(r_index)
+    print(enconding_dic)
