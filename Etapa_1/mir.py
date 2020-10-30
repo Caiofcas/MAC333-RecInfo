@@ -13,6 +13,16 @@ DEBUG = False
 resplit = re.compile(r'[\W\d_\s]+')
 
 
+def getArgs():
+    parser = argparse.ArgumentParser(
+        description='Creates the reverse index for .txt files in a directory')
+
+    parser.add_argument('dir', help='directory to be processed')
+    parser.add_argument('-v', action='store_true',
+                        help='print verborragic information for debugging purposes')
+    return parser.parse_args()
+
+
 def GetFileEncoding(file_path):
     """ Get the encoding of file_path using chardet package"""
     with open(file_path, 'rb') as f:
@@ -103,13 +113,7 @@ if __name__ == "__main__":
     if DEBUG:
         print(sys.argv)
 
-    parser = argparse.ArgumentParser(
-        description='Creates the reverse index for .txt files in a directory')
-
-    parser.add_argument('dir', help='directory to be processed')
-    parser.add_argument('-v', action='store_true',
-                        help='print verborragic information for debugging purposes')
-    args = parser.parse_args()
+    args = getArgs()
 
     if DEBUG:
         print(args)

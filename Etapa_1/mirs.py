@@ -7,6 +7,23 @@ from collections import Counter
 DEBUG = False
 
 
+def getArgs():
+    parser = argparse.ArgumentParser(
+        description="Searchs <dir>'s Information Retrieval system.")
+
+    parser.add_argument('dir', help='directory to be processed')
+    parser.add_argument('-t', type=int,
+                        help='Print the <t> most common tokens')
+    parser.add_argument('-r', type=re.compile,
+                        help='Print tokens that match the regex passed')
+    parser.add_argument('-R', type=re.compile,
+                        help='Print tokens that DON\'T match the regex passed')
+    parser.add_argument('tokens', action="append", nargs='*',
+                        help='directory to be processed')
+
+    return parser.parse_args()
+
+
 def unpickle(rootdir):
     picklefn = '{}/mir.pickle'.format(rootdir)
 
@@ -34,20 +51,7 @@ def unpickle(rootdir):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(
-        description="Searchs <dir>'s Information Retrieval system.")
-
-    parser.add_argument('dir', help='directory to be processed')
-    parser.add_argument('-t', type=int,
-                        help='Print the <t> most common tokens')
-    parser.add_argument('-r', type=re.compile,
-                        help='Print tokens that match the regex passed')
-    parser.add_argument('-R', type=re.compile,
-                        help='Print tokens that DON\'T match the regex passed')
-    parser.add_argument('tokens', action="append", nargs='*',
-                        help='directory to be processed')
-
-    args = parser.parse_args()
+    args = getArgs()
 
     if DEBUG:
         print(args)
@@ -117,8 +121,6 @@ if __name__ == "__main__":
                 len(top_tokens))
 
         top_tokens = counter_filtered.most_common(args.t)
-        if DEBUG:
-            print(top_tokens)
 
         print('\tDF\tTermo/Token\tLista de incidência com IDs dos arquivos')
 
