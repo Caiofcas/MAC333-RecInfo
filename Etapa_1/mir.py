@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import codecs
 import chardet
 import fnmatch
 import os
@@ -11,6 +12,27 @@ DEBUG = False
 
 MAXSIZE = 100000
 resplit = re.compile(r'[\W\d_\s]+')
+mixed_miscoded_espurious = {b'\x81': 1,
+                            b'\x8d': 1,
+                            b'\x90': 1,
+                            b'\x9d': 1,
+                            b'\x91': 1}
+
+
+def mixed_decoder(error: UnicodeDecodeError) -> (str, int):
+    global mixed_miscoded_espurious
+    """ Trata erros de decodificação Unicode como sendo Windows-1252"""
+
+    bs: bytes = error.object[error.start: error.end]
+
+    if bs in mixed_miscoded_espurious:  # ignored
+        return '', error.start + 1
+    else:
+        return bs.decode("Windows-1252"), error.start + 1
+    return bs.decode("Windows-1252", errors='ignore'), error.start + 1
+
+
+codecs.register_error("mixed", mixed_decoder)
 
 
 def parseArgs():
