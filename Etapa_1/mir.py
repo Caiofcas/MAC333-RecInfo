@@ -20,6 +20,9 @@ def getArgs():
     parser.add_argument('dir', help='directory to be processed')
     parser.add_argument('-v', action='store_true',
                         help='print verborragic information for debugging purposes')
+
+    parser.add_argument('-@', '--instructions', type=argparse.FileType('r'),
+                        help='instruction file to be loaded')
     return parser.parse_args()
 
 
@@ -118,16 +121,15 @@ if __name__ == "__main__":
         print(args)
         print("Dir: {}".format(args.dir))
 
+    # deal with instructions
+    instructions = []
+    if args.instructions is not None:
+        instructions = [line.split() for line in args.instructions.readlines()]
+
+    # print(instructions)
     # list all txt documents
 
-    print("Lista de arquivos .txt encontrados na "
-          "sub-árvore do diretório: {}".format(args.dir))
-
     filelist = getFileList(args.dir)
-    for c, fn in enumerate(filelist):
-        print("{} {}".format(c, fn))
-
-    print("Foram encontrados {} documentos.".format(len(filelist)))
 
     # Construct index
 
@@ -135,6 +137,7 @@ if __name__ == "__main__":
         filelist, args.dir, args.v)
 
     del r_index[""]
+
     # Save index
 
     picklefn = '{}/mir.pickle'.format(args.dir)
@@ -144,6 +147,21 @@ if __name__ == "__main__":
         pickler.dump(filelist)
         pickler.dump(r_index)
         pickler.dump(encoding_dic)
+
+    # Print statements
+    if instructions != []:
+        print("Instruções ao indexador tomadas de instruc.lst")
+        for code, fn in instructions:
+            print("{} {}".format(code, fn))
+        print()
+
+    print("Lista de arquivos .txt encontrados na "
+          "sub-árvore do diretório: {}".format(args.dir))
+
+    for c, fn in enumerate(filelist):
+        print("{} {}".format(c, fn))
+
+    print("Foram encontrados {} documentos.".format(len(filelist)))
 
     print("Os {} documentos foram processados e produziram um total de "
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
