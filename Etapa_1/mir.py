@@ -133,8 +133,9 @@ def getTokens(fn, rootdir, enc):
         )
 
         for token in words_gen:
-            n_tokens += 1
-            tokens.add(token)
+            if token != '':
+                n_tokens += 1
+                tokens.add(token)
 
     return tokens, n_tokens, encoding
 
@@ -187,8 +188,6 @@ if __name__ == "__main__":
 
     r_index, ntokens = buildReverseIndex(
         filelist, args.dir, encoding_dic, instructions)
-
-    del r_index[""]
 
     # Save index
 
