@@ -9,6 +9,7 @@ import argparse
 # DEBUG = True
 DEBUG = False
 
+MAXSIZE = 100000
 resplit = re.compile(r'[\W\d_\s]+')
 
 
@@ -23,12 +24,6 @@ def parseArgs():
     parser.add_argument('-@', '--instructions', type=argparse.FileType('r'),
                         help='instruction file to be loaded')
     return parser.parse_args()
-
-
-def getFileEncoding(file_path):
-    """ Get the encoding of file_path using chardet package"""
-    with open(file_path, 'rb') as f:
-        return chardet.detect(f.read())
 
 
 def getFileList(rootdir, instructions):
@@ -69,29 +64,64 @@ def getFileList(rootdir, instructions):
     return filelist
 
 
-def getTokens(fn, fileID, rootdir, verborragic):
+def getFileEncoding(file_path):
+    """ Get the encoding of file_path using chardet package"""
+
+    with open(file_path, 'rb') as f:
+        enc = chardet.detect(f.read(MAXSIZE))
+
+        size = os.stat(file_path).st_size
+        if size > MAXSIZE and enc['encoding'] == 'ascii':
+            enc['encoding'] = 'UTF-8'
+            enc['confidence'] = 0.4
+            enc['errors'] = 'mixed'
+        elif enc['confidence'] < .63:
+            enc['errors'] = 'replace'
+        else:
+            enc['errors'] = 'strict'
+
+    return enc
+
+
+def getEncodingDict(filelist, rootdir, instructions, verborragic):
+    encoding_dic = {}
+    if verborragic:
+        print('\nDebugging information:\n')
+
+    for i, fn in enumerate(filelist):
+        if instructions.get(fn) == '@u':
+            encoding_dic[fn] = {
+                'encoding': 'utf-8-sig',
+                'confidence': 1,
+                'error': 'strict'
+            }
+        else:
+            encoding_dic[fn] = getFileEncoding(os.path.join(rootdir, fn))
+        if verborragic:
+            encoding = encoding_dic[fn]['encoding']
+            confidence = float(encoding_dic[fn]['confidence'])*100
+
+            print(
+                "{:5} {: <10} {:4.1f} {:6} {}".format(
+                    i,
+                    str(encoding),
+                    confidence,
+                    os.stat(os.path.join(rootdir, fn)).st_size,
+                    fn)
+            )
+
+    if verborragic:
+        print('\n')
+    return encoding_dic
+
+
+def getTokens(fn, rootdir, enc):
     tokens = set()
     fn_path = os.path.join(rootdir, fn)
 
-    enc = getFileEncoding(fn_path)
-
     encoding = enc['encoding']
     confidence = float(enc['confidence'])*100
-
-    if verborragic:
-        print(
-            "{:5} {: <10} {:4.1f} {:6} {}".format(
-                fileID,
-                str(encoding),
-                confidence,
-                os.stat(fn_path).st_size,
-                fn)
-        )
-
-    if confidence < 63:
-        myerr = 'replace'
-    else:
-        myerr = 'strict'
+    myerr = enc['errors']
 
     n_tokens = 0
     with open(fn_path, 'r', encoding=encoding, errors=myerr) as handle:
@@ -109,17 +139,13 @@ def getTokens(fn, fileID, rootdir, verborragic):
     return tokens, n_tokens, encoding
 
 
-def buildReverseIndex(files, rootdir, instructions, verborragic):
+def buildReverseIndex(files, rootdir, encoding_dic, instructions):
     r_index = {}  # token : list of fileIDs
     n_tokens = 0
-    encoding_dic = {}
-
-    if verborragic:
-        print('\nDebugging information:\n')
 
     for c, fn in enumerate(files):
-        tokens, n_tokens_file, enc = getTokens(fn, c, rootdir, verborragic)
-        encoding_dic[fn] = enc
+        enc = encoding_dic[fn]
+        tokens, n_tokens_file, enc = getTokens(fn, rootdir, enc)
 
         n_tokens += n_tokens_file
         for t in tokens:
@@ -128,9 +154,7 @@ def buildReverseIndex(files, rootdir, instructions, verborragic):
             else:
                 r_index[t].append(c)
 
-    if verborragic:
-        print('\n')
-    return r_index, n_tokens, encoding_dic
+    return r_index, n_tokens
 
 
 if __name__ == "__main__":
@@ -156,10 +180,13 @@ if __name__ == "__main__":
 
     print("Foram encontrados {} documentos.\n".format(len(filelist)))
 
+    # Get encoding dict for all files:
+
+    encoding_dic = getEncodingDict(filelist, args.dir, instructions, args.v)
     # Construct index
 
-    r_index, ntokens, encoding_dic = buildReverseIndex(
-        filelist, args.dir, instructions, args.v)
+    r_index, ntokens = buildReverseIndex(
+        filelist, args.dir, encoding_dic, instructions)
 
     del r_index[""]
 
