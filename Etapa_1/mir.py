@@ -32,7 +32,7 @@ def getFileEncoding(file_path):
         return chardet.detect(f.read())
 
 
-def getFileList(rootdir, instructions):
+def getFileList(rootdir):
     filelist = []
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
@@ -44,16 +44,6 @@ def getFileList(rootdir, instructions):
                 filelist.append(filepath.replace(rootdir+os.sep, ''))
 
     filelist.sort(key=lambda x: x.rsplit(os.sep)[-1])
-
-    # add isFile Flag
-    # new_filelist = [(x, True) for c, x in filelist]
-
-    # for code, name in instructions:
-    #     if code == '@x':
-    #         for c, fn in enumerate(filelist):
-    #             if name == fn:
-    #                 new_filelist[c] = (
-    #                     "Arquivo {} removido ", False)
 
     return filelist
 
@@ -126,7 +116,7 @@ def buildReverseIndex(files, rootdir, instructions, verborragic):
 
     if verborragic:
         print('\n')
-    return r_index, n_tokens, encoding_dic, files
+    return r_index, n_tokens, encoding_dic
 
 
 if __name__ == "__main__":
@@ -144,14 +134,45 @@ if __name__ == "__main__":
     if args.instructions is not None:
         instructions = dict((line.split()[::-1]
                              for line in args.instructions.readlines()))
+        print("Instruções ao indexador tomadas de instruc.lst")
+        for fn in instructions:
+            print("{} {}".format(instructions[fn], fn))
+        print()
 
-    # list all txt documents
+    # Get list of txt documents
 
-    filelist = getFileList(args.dir, instructions)
+    print("Lista de arquivos .txt encontrados na "
+          "sub-árvore do diretório: {}".format(args.dir))
+
+    ori_filelist = getFileList(args.dir)
+
+    i = 0
+    filelist = []
+    for fn in ori_filelist:
+
+        wasRemoved = False
+
+        for key in instructions:
+            if instructions[key] == '@x':
+                if key == fn:
+                    print('Arquivo {} excluído da indexação'.format(fn))
+                    wasRemoved = True
+                elif key in fn:
+                    print('Diretório {} excluído da indexação'.format(key))
+                    wasRemoved = True
+            if wasRemoved:
+                break
+
+        if not wasRemoved:
+            filelist.append(fn)
+            print("{} {}".format(i, fn))
+            i += 1
+
+    print("Foram encontrados {} documentos.".format(len(filelist)))
 
     # Construct index
 
-    r_index, ntokens, encoding_dic, filelist = buildReverseIndex(
+    r_index, ntokens, encoding_dic = buildReverseIndex(
         filelist, args.dir, instructions, args.v)
 
     del r_index[""]
@@ -167,19 +188,6 @@ if __name__ == "__main__":
         pickler.dump(encoding_dic)
 
     # Print statements
-    if instructions != {}:
-        print("Instruções ao indexador tomadas de instruc.lst")
-        for fn in instructions:
-            print("{} {}".format(instructions[fn], fn))
-        print()
-
-    print("Lista de arquivos .txt encontrados na "
-          "sub-árvore do diretório: {}".format(args.dir))
-
-    for c, fn in enumerate(filelist):
-        print("{} {}".format(c, fn))
-
-    print("Foram encontrados {} documentos.".format(len(filelist)))
 
     print("Os {} documentos foram processados e produziram um total de "
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
