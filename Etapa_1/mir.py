@@ -32,7 +32,7 @@ def getFileEncoding(file_path):
         return chardet.detect(f.read())
 
 
-def getFileList(rootdir):
+def getFileList(rootdir, instructions):
     filelist = []
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
@@ -44,7 +44,25 @@ def getFileList(rootdir):
                 filelist.append(filepath.replace(rootdir+os.sep, ''))
 
     filelist.sort(key=lambda x: x.rsplit(os.sep)[-1])
+
+    # add isFile Flag
+    # new_filelist = [(x, True) for c, x in filelist]
+
+    # for code, name in instructions:
+    #     if code == '@x':
+    #         for c, fn in enumerate(filelist):
+    #             if name == fn:
+    #                 new_filelist[c] = (
+    #                     "Arquivo {} removido ", False)
+
     return filelist
+
+
+# def removeFiles(filelist, instructions):
+#     new_filelist = filelist.copy()
+#     removed = []
+
+#     return new_filelist, removed
 
 
 def getTokens(fn, fileID, rootdir, verborragic):
@@ -87,7 +105,7 @@ def getTokens(fn, fileID, rootdir, verborragic):
     return tokens, n_tokens, encoding
 
 
-def buildReverseIndex(files, rootdir, verborragic):
+def buildReverseIndex(files, rootdir, instructions, verborragic):
     r_index = {}  # token : list of fileIDs
     n_tokens = 0
     encoding_dic = {}
@@ -108,7 +126,7 @@ def buildReverseIndex(files, rootdir, verborragic):
 
     if verborragic:
         print('\n')
-    return r_index, n_tokens, encoding_dic
+    return r_index, n_tokens, encoding_dic, files
 
 
 if __name__ == "__main__":
@@ -122,19 +140,19 @@ if __name__ == "__main__":
         print("Dir: {}".format(args.dir))
 
     # deal with instructions
-    instructions = []
+    instructions = {}
     if args.instructions is not None:
-        instructions = [line.split() for line in args.instructions.readlines()]
+        instructions = dict((line.split()[::-1]
+                             for line in args.instructions.readlines()))
 
-    # print(instructions)
     # list all txt documents
 
-    filelist = getFileList(args.dir)
+    filelist = getFileList(args.dir, instructions)
 
     # Construct index
 
-    r_index, ntokens, encoding_dic = buildReverseIndex(
-        filelist, args.dir, args.v)
+    r_index, ntokens, encoding_dic, filelist = buildReverseIndex(
+        filelist, args.dir, instructions, args.v)
 
     del r_index[""]
 
@@ -149,10 +167,10 @@ if __name__ == "__main__":
         pickler.dump(encoding_dic)
 
     # Print statements
-    if instructions != []:
+    if instructions != {}:
         print("Instruções ao indexador tomadas de instruc.lst")
-        for code, fn in instructions:
-            print("{} {}".format(code, fn))
+        for fn in instructions:
+            print("{} {}".format(instructions[fn], fn))
         print()
 
     print("Lista de arquivos .txt encontrados na "
