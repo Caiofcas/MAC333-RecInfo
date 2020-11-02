@@ -32,7 +32,7 @@ def getFileEncoding(file_path):
 
 
 def getFileList(rootdir):
-    filelist = []
+    ori_filelist = []
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
             if DEBUG:
@@ -40,9 +40,31 @@ def getFileList(rootdir):
             filepath = os.path.join(subdir, file)
 
             if filepath.endswith(".txt"):
-                filelist.append(filepath.replace(rootdir+os.sep, ''))
+                ori_filelist.append(filepath.replace(rootdir+os.sep, ''))
 
-    filelist.sort(key=lambda x: x.rsplit(os.sep)[-1])
+    ori_filelist.sort(key=lambda x: x.rsplit(os.sep)[-1])
+
+    i = 0
+    filelist = []
+    for fn in ori_filelist:
+
+        wasRemoved = False
+
+        for key in instructions:
+            if instructions[key] == '@x':
+                if key == fn:
+                    print('Arquivo {} excluído da indexação'.format(fn))
+                    wasRemoved = True
+                elif key in fn:
+                    print('Diretório {} excluído da indexação'.format(key))
+                    wasRemoved = True
+            if wasRemoved:
+                break
+
+        if not wasRemoved:
+            filelist.append(fn)
+            print("{} {}".format(i, fn))
+            i += 1
 
     return filelist
 
@@ -130,31 +152,17 @@ if __name__ == "__main__":
     print("Lista de arquivos .txt encontrados na "
           "sub-árvore do diretório: {}".format(args.dir))
 
-    ori_filelist = getFileList(args.dir)
+    filelist = getFileList(args.dir)
 
-    i = 0
-    filelist = []
-    for fn in ori_filelist:
+    print("Foram encontrados {} documentos.\n".format(len(filelist)))
 
-        wasRemoved = False
+    # Construct index
 
-        for key in instructions:
-            if instructions[key] == '@x':
-                if key == fn:
-                    print('Arquivo {} excluído da indexação'.format(fn))
-                    wasRemoved = True
-                elif key in fn:
-                    print('Diretório {} excluído da indexação'.format(key))
-                    wasRemoved = True
-            if wasRemoved:
-                break
+    r_index, ntokens, encoding_dic = buildReverseIndex(
+        filelist, args.dir, instructions, args.v)
 
-        if not wasRemoved:
-            filelist.append(fn)
-            print("{} {}".format(i, fn))
-            i += 1
+    del r_index[""]
 
-    print("Foram encontrados {} documentos.\n".format(len(filelist)))s
     # Save index
 
     picklefn = '{}/mir.pickle'.format(args.dir)
