@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import chardet
-import sys
 import fnmatch
 import os
 import pickle
@@ -13,7 +12,7 @@ DEBUG = False
 resplit = re.compile(r'[\W\d_\s]+')
 
 
-def getArgs():
+def parseArgs():
     parser = argparse.ArgumentParser(
         description='Creates the reverse index for .txt files in a directory')
 
@@ -46,13 +45,6 @@ def getFileList(rootdir):
     filelist.sort(key=lambda x: x.rsplit(os.sep)[-1])
 
     return filelist
-
-
-# def removeFiles(filelist, instructions):
-#     new_filelist = filelist.copy()
-#     removed = []
-
-#     return new_filelist, removed
 
 
 def getTokens(fn, fileID, rootdir, verborragic):
@@ -120,14 +112,8 @@ def buildReverseIndex(files, rootdir, instructions, verborragic):
 
 
 if __name__ == "__main__":
-    if DEBUG:
-        print(sys.argv)
 
-    args = getArgs()
-
-    if DEBUG:
-        print(args)
-        print("Dir: {}".format(args.dir))
+    args = parseArgs()
 
     # deal with instructions
     instructions = {}
@@ -168,15 +154,7 @@ if __name__ == "__main__":
             print("{} {}".format(i, fn))
             i += 1
 
-    print("Foram encontrados {} documentos.".format(len(filelist)))
-
-    # Construct index
-
-    r_index, ntokens, encoding_dic = buildReverseIndex(
-        filelist, args.dir, instructions, args.v)
-
-    del r_index[""]
-
+    print("Foram encontrados {} documentos.\n".format(len(filelist)))s
     # Save index
 
     picklefn = '{}/mir.pickle'.format(args.dir)
