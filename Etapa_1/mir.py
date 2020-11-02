@@ -31,7 +31,7 @@ def getFileEncoding(file_path):
         return chardet.detect(f.read())
 
 
-def getFileList(rootdir):
+def getFileList(rootdir, instructions):
     ori_filelist = []
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     print("Lista de arquivos .txt encontrados na "
           "sub-árvore do diretório: {}".format(args.dir))
 
-    filelist = getFileList(args.dir)
+    filelist = getFileList(args.dir, instructions)
 
     print("Foram encontrados {} documentos.\n".format(len(filelist)))
 
