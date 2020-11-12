@@ -93,6 +93,10 @@ def getFileEncoding(file_path):
         enc = chardet.detect(f.read(MAXSIZE))
 
         size = os.stat(file_path).st_size
+
+        enc['tamanho'] = size
+        enc['modificado'] = os.path.getmtime(file_path)
+
         if size > MAXSIZE and enc['encoding'] == 'ascii':
             enc['encoding'] = 'UTF-8'
             enc['confidence'] = 0.4
@@ -111,14 +115,17 @@ def getEncodingDict(filelist, rootdir, instructions, verborragic):
         print('\nDebugging information:\n')
 
     for i, fn in enumerate(filelist):
+        file_path = os.path.join(rootdir, fn)
         if instructions.get(fn) == '@u':
             encoding_dic[fn] = {
                 'encoding': 'utf-8-sig',
                 'confidence': 1,
-                'error': 'strict'
+                'error': 'strict',
+                'tamanho': os.stat(file_path).st_size,
+                'modificado': os.path.getmtime(file_path)
             }
         else:
-            encoding_dic[fn] = getFileEncoding(os.path.join(rootdir, fn))
+            encoding_dic[fn] = getFileEncoding(file_path)
         if verborragic:
             encoding = encoding_dic[fn]['encoding']
             confidence = float(encoding_dic[fn]['confidence'])*100
@@ -128,7 +135,7 @@ def getEncodingDict(filelist, rootdir, instructions, verborragic):
                     i,
                     str(encoding),
                     confidence,
-                    os.stat(os.path.join(rootdir, fn)).st_size,
+                    encoding_dic[fn]['tamanho'],
                     fn)
             )
 
@@ -206,6 +213,7 @@ if __name__ == "__main__":
     # Get encoding dict for all files:
 
     encoding_dic = getEncodingDict(filelist, args.dir, instructions, args.v)
+
     # Construct index
 
     r_index, ntokens = buildReverseIndex(
@@ -216,7 +224,7 @@ if __name__ == "__main__":
     picklefn = '{}/mir.pickle'.format(args.dir)
     with open(picklefn, 'w+b') as picklefile:
         pickler = pickle.Pickler(picklefile)
-        pickler.dump('MIR 1.0')
+        pickler.dump('MIR 2.0')
         pickler.dump(filelist)
         pickler.dump(r_index)
         pickler.dump(encoding_dic)
