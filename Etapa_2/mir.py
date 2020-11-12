@@ -145,7 +145,7 @@ def getEncodingDict(filelist, rootdir, instructions, verborragic):
 
 
 def getTokens(fn, rootdir, enc):
-    tokens = set()
+    tokens = {}
     fn_path = os.path.join(rootdir, fn)
 
     encoding = enc['encoding']
@@ -163,14 +163,18 @@ def getTokens(fn, rootdir, enc):
 
         for token in words_gen:
             if token != '':
+                if tokens.get(token) is None:
+                    tokens[token] = 1
+                else:
+                    tokens[token] += 1
                 n_tokens += 1
-                tokens.add(token)
+                # tokens.add(token)
 
     return tokens, n_tokens, encoding
 
 
 def buildReverseIndex(files, rootdir, encoding_dic, instructions):
-    r_index = {}  # token : list of fileIDs
+    r_index = {}  # token : list of (fileID, freq)
     n_tokens = 0
 
     for c, fn in enumerate(files):
@@ -180,9 +184,9 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
         n_tokens += n_tokens_file
         for t in tokens:
             if r_index.get(t) is None:
-                r_index[t] = [c]
+                r_index[t] = [(c, tokens[t])]
             else:
-                r_index[t].append(c)
+                r_index[t].append((c, tokens[t]))
 
     return r_index, n_tokens
 
