@@ -167,10 +167,8 @@ def getTokens(fn, rootdir, enc):
                     token_freq[token] = 1
                 else:
                     token_freq[token] += 1
-                n_tokens += 1
-                # tokens.add(token)
 
-    return token_freq, n_tokens, encoding
+    return token_freq, encoding
 
 
 def buildReverseIndex(files, rootdir, encoding_dic, instructions):
@@ -179,9 +177,9 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
 
     for c, fn in enumerate(files):
         enc = encoding_dic[fn]
-        token_freq, n_tokens_file, enc = getTokens(fn, rootdir, enc)
+        token_freq, enc = getTokens(fn, rootdir, enc)
+        n_tokens += sum(token_freq.values())
 
-        n_tokens += n_tokens_file
         for t in token_freq.keys():
             if r_index.get(t) is None:
                 r_index[t] = [(c, token_freq[t])]
