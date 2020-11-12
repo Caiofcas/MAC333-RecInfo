@@ -145,15 +145,15 @@ def getEncodingDict(filelist, rootdir, instructions, verborragic):
 
 
 def getTokens(fn, rootdir, enc):
-    tokens = {}
-    fn_path = os.path.join(rootdir, fn)
+    token_freq = {}
+    file_path = os.path.join(rootdir, fn)
 
     encoding = enc['encoding']
     confidence = float(enc['confidence'])*100
     myerr = enc['errors']
 
     n_tokens = 0
-    with open(fn_path, 'r', encoding=encoding, errors=myerr) as handle:
+    with open(file_path, 'r', encoding=encoding, errors=myerr) as handle:
 
         words_gen = (
             word.lower()
@@ -163,14 +163,14 @@ def getTokens(fn, rootdir, enc):
 
         for token in words_gen:
             if token != '':
-                if tokens.get(token) is None:
-                    tokens[token] = 1
+                if token_freq.get(token) is None:
+                    token_freq[token] = 1
                 else:
-                    tokens[token] += 1
+                    token_freq[token] += 1
                 n_tokens += 1
                 # tokens.add(token)
 
-    return tokens, n_tokens, encoding
+    return token_freq, n_tokens, encoding
 
 
 def buildReverseIndex(files, rootdir, encoding_dic, instructions):
@@ -179,14 +179,14 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
 
     for c, fn in enumerate(files):
         enc = encoding_dic[fn]
-        tokens, n_tokens_file, enc = getTokens(fn, rootdir, enc)
+        token_freq, n_tokens_file, enc = getTokens(fn, rootdir, enc)
 
         n_tokens += n_tokens_file
-        for t in tokens:
+        for t in token_freq.keys():
             if r_index.get(t) is None:
-                r_index[t] = [(c, tokens[t])]
+                r_index[t] = [(c, token_freq[t])]
             else:
-                r_index[t].append((c, tokens[t]))
+                r_index[t].append((c, token_freq[t]))
 
     return r_index, n_tokens
 
