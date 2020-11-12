@@ -1,0 +1,85 @@
+
+                                                      Imprimir  |  Fechar
+
+                                [spacer.gif]
+
+                                [spacer.gif]
+
+   [spacer.gif]
+
+                               AGÊNCIA FAPESP
+
+                     Agência de Notícias da Fundação de
+                  Amparo à Pesquisa do Estado de São Paulo
+
+                                29/06/2007 
+
+   [spacer.gif]
+
+                                [spacer.gif]
+
+                                              [materia2_boletim_5850.jpg]
+          Alunos do Instituto de Matemática e Estatística da USP ficam em
+               primeiro e terceiro lugares no Concurso Latinoamericano de
+    Dissertações de Mestrado (foto: Jesús Mena-Chalco e Roberto Marcondes
+                                                            Cesar Junior)
+
+                      Computação brasileira é premiada
+                                [spacer.gif]
+                                 27/07/2006
+                             Por Thiago Romero
+
+        Agência FAPESP - Dois trabalhos apresentados no Instituto de
+     Matemática e Estatística (IME) da Universidade de São Paulo (USP)
+          ganharam o primeiro e o terceiro prêmios no 13º Concurso
+    Latino-Americano de Dissertações de Mestrado, na área de ciência da
+                                computação.
+
+     O concurso é promovido anualmente pelo Centro Latino-Americano de
+     Estudos em Informática (Clei), sediado no Chile, com o objetivo de
+    reconhecer o trabalho de estudantes de mestrado de universidades na
+                                  região.
+
+    O vencedor foi Jesús Mena-Chalco, com a dissertação Identificação de
+    regiões codificantes de proteínas mediante a transformada modificada
+     de Morlet, na área de bioinformática. A pesquisa foi orientada por
+    Roberto Marcondes Cesar Junior, professor do Departamento de Ciência
+                         da Computação do IME/USP.
+
+   Foi uma grande surpresa. Apesar de ter nascido no Peru, minha formação
+    acadêmica de pós-graduação está sendo realizada no Brasil. Por isso,
+     ofereço o prêmio ao meu orientador e aos professores da USP. Sem a
+    colaboração deles jamais teria conseguido concluir um trabalho desse
+                 porte, disse Mena-Chalco à Agência FAPESP.
+
+   Mena-Chalco, que está fazendo o doutorado, lembra que a bioinformática
+     tem ganhado importância devido ao auxílio oferecido às descobertas
+   genômicas. Quando um novo organismo é seqüenciado, além de obter toda
+    a informação do genoma, é fundamental a identificação dos genes e a
+         determinação das regiões codificantes de proteínas, disse.
+
+    Segundo o pesquisador, as regiões codificantes dos genes apresentam
+   uma organização periódica imperfeita, conhecida como periodicidade de
+   três bases (TBP). O estudo propõe um novo método para a identificação
+   de codificantes de proteínas, com enfoque na busca de regiões com TBP.
+
+     O terceiro lugar da competição ficou com Roberto Speicys Cardoso,
+    autor da dissertação Adaptação dinâmica utilizando agentes móveis em
+    computação ubíqua. O trabalho propõe uma arquitetura de software que
+   fornece garantias de qualidade a aplicações em ambientes inteligentes.
+   Um dos maiores desafios da área de pesquisa conhecida como computação
+   ubíqua é desenvolver plataformas que gerenciem grandes quantidades de
+                      equipamentos em um mesmo local.
+
+     Os dois alunos do IME viajarão a Santiago do Chile para receber o
+   prêmio e apresentar seus trabalhos na 32ª Conferência Latino-Americana
+   de Informática, que será realizada de 20 a 25 de agosto. Roberto Uribe
+    Paredes, da Universidade de Magalhães, no Chile, ficou com o segundo
+                            lugar da competição.
+
+                    Mais informações: www.clei2006.org.
+
+   AGÊNCIA FAPESP - R. Pio XI, 1500 - Alto da Lapa - CEP 05468-901 - São
+                             Paulo-SP - Brasil
+         Tel: (+55) 11 3838 4000  Fax. (+55) 11 3838 4117 - E-mail:
+                             agencia@fapesp.br

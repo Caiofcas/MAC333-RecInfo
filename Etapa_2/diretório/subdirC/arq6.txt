@@ -1,0 +1,77 @@
+
+                                                      Imprimir  |  Fechar
+
+                                [spacer.gif]
+
+                                [spacer.gif]
+
+   [spacer.gif]
+
+                               AGÊNCIA FAPESP
+
+                     Agência de Notícias da Fundação de
+                  Amparo à Pesquisa do Estado de São Paulo
+
+                                29/06/2007 
+
+   [spacer.gif]
+
+                                [spacer.gif]
+
+                                              [materia2_boletim_6004.jpg]
+   Artigo de Julian Monteiro (foto), pesquisador do IME/USP, que sugere o
+   uso de um novo modelo teórico para análise de algoritmos utilizados em
+      redes de sensores sem fio, ganha prêmio em conferência realizada no
+                                                                   Canadá
+
+                        Modelo matemático é premiado
+                                [spacer.gif]
+                                 28/08/2006
+                             Por Thiago Romero
+
+       Agência FAPESP - Deu zebra na 2ª Conferência Internacional em
+     Computação Sem Fio e Móvel, Redes e Comunicações (WiMob 2006), em
+     Montreal, no Canadá. Um brasileiro levou o prêmio de melhor artigo
+   científico apresentado no congresso, realizado em junho pelo Institute
+              of Electrical and Electronics Engineers (IEEE).
+
+     O ganhador foi Julian Geraldes Monteiro, mestrando do Instituto de
+   Matemática e Estatística (IME) da Universidade de São Paulo (USP). "Um
+   trabalho brasileiro ter esse reconhecimento em um encontro como esses
+    é incomum, ainda mais por ele ser aluno de mestrado", disse Alfredo
+    Goldman, professor do Departamento de Ciência da Computação do IME e
+                  orientador do estudo, à Agência FAPESP.
+
+       O trabalho Performance evaluation of dynamic networks using an
+    evolving graph combinatorial model apresenta resultados preliminares
+    do projeto Mobidyn, desenvolvido com apoio da FAPESP e do Instituto
+    Nacional de Pesquisa em Informática e Automação (Inria), da França.
+
+   O projeto analisa modelos combinatórios de grafos (conjunto algébricos
+   formados por arcos e vértices) evolutivos aplicáveis em protocolos de
+   roteamento para redes ad hoc, sistemas como os de sensores sem fio, em
+     que todos os nós móveis podem se comunicar diretamente entre eles.
+
+     O artigo sugere um uso prático desse modelo teórico e genérico de
+        grafos evolutivos, que pode ser aplicado em qualquer área do
+     conhecimento que envolva adjacência [proximidade dos vértices dos
+                     grafos] e tempo, explica Goldman.
+
+   Os resultados iniciais obtidos pela equipe do projeto Mobidyn mostram
+    que os grafos evolutivos são uma importante ferramenta na análise de
+                  algoritmos de redes de sensores sem fio.
+
+      Normalmente, não se sabe a eficácia de um algoritmo. Mas, com o
+   auxílio dos grafos evolutivos, que estão associados à previsibilidade
+    no tempo, conseguimos identificar as chances de um algoritmo ser bom
+    ou ruim, disse Goldman. Essa teoria pode ser aplicada na prática em
+   qualquer tipo de rede de sensores que tenha comportamento previsível,
+    como as redes de satélites ou a de sensores de umidade da Amazônia.
+
+              Mais informações: www.congresbcu.com/wimob2006 e
+                        http://julian.com.br/mobidyn
+
+   AGÊNCIA FAPESP - R. Pio XI, 1500 - Alto da Lapa - CEP 05468-901 - São
+                             Paulo-SP - Brasil
+         Tel: (+55) 11 3838 4000  Fax. (+55) 11 3838 4117 - E-mail:
+                             agencia@fapesp.br

@@ -1,0 +1,228 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+****** Yoshiharu Kohayakawa, professor no IME-USP, ganha prÃªmio internacional
+em matemÃ¡tica | AGÃNCIA FAPESP ******
+Pesquise
+[chave               ] [OK]
+PT EN ES
+Sites_FAPESP
+[https://agencia.fapesp.br/agencia-novo/Control/../images/
+logo_agencia_fapesp.jpg]
+    * NotÃ­cias
+       Todas_as_NotÃ­cias CoronavÃ­rus Webinars_COVID-19
+    * Agenda
+    * VÃ­deos
+    * Assine
+    * **** Boletim diÃ¡rio ****
+      Escolha o dia para ler o boletim da AgÃªncia
+      [                    ]
+    * Fale_Conosco_|_AgÃªncia_FAPESP
+      **** Fale Conosco ****
+          o [nome                ]
+          o [email               ]
+          o [subject             ]
+    * [Enviar]
+Selecione_um_idioma
+ PortuguÃªs English EspaÃ±ol
+Pesquise
+[chave               ] [OK]
+    * Facebook_|_AgÃªncia_FAPESP
+    * Twitter_|_AgÃªncia_FAPESP
+    * Instagram_|_AgÃªncia_FAPESP
+    * Youtube_|_AgÃªncia_FAPESP
+    * RSS_|_AgÃªncia_FAPESP
+
+    * **** AgÃªncia FAPESP ****
+          o  Todas_as_NotÃ­cias
+          o  CoronavÃ­rus
+          o  Webinars_COVID-19
+          o  Agenda
+          o  VÃ­deos
+          o  Assine
+          o  Fale_Conosco
+    * **** Sites FAPESP ****
+          o  FAPESP
+          o  Biblioteca_Virtual
+          o  CEPID
+          o  Eventos
+          o  FAPESP_na_mÃ­dia
+          o  Oportunidades
+          o  Pesquisa_para_InovaÃ§Ã£o
+          o  PublicaÃ§Ãµes
+          o  Revista_Pesquisa_FAPESP
+[https://agencia.fapesp.br/agencia-novo/Control/../imagens/noticia/28323.jpg]
+PrÃªmio Fulkerson Ã© concedido a cada trÃªs anos pela American Mathematical
+Society e pela Mathematical Optimization Society para artigos cientÃ­ficos em
+matemÃ¡tica discreta (foto: Marcos Santos / USP Imagens)
+****** Yoshiharu Kohayakawa, professor no IME-USP, ganha prÃªmio internacional
+em matemÃ¡tica ******
+*** 27 de julho de 2018 ***
+Marcos de OliveiraÂ  |Â  AgÃªncia FAPESP – O professor Yoshiharu_Kohayakawa, do
+Departamento de CiÃªncia da ComputaÃ§Ã£o do Instituto de MatemÃ¡tica e
+EstatÃ­stica (IME) da Universidade de SÃ£o Paulo (USP), Ã© o primeiro
+brasileiro e latino-americano a ganhar o PrÃªmio_Fulkerson de matemÃ¡tica.
+O prÃªmio Ã© concedido a cada trÃªs anos pela American Mathematical Society
+(MAS) e pela Mathematical Optimization Society (MOS). Um dos mais importantes
+prÃªmios da Ã¡rea, o Fulkerson Ã© destinado a artigos cientÃ­ficos sobre
+matemÃ¡tica discreta, Ã¡rea chamada dessa forma por ser diferente da
+matemÃ¡tica contÃ­nua, que envolve conceitos de cÃ¡lculo diferencial e
+integral, assunto que todos os estudantes universitÃ¡rios da Ã¡rea de exatas
+encontram no comeÃ§o de seus cursos.Â 
+A discreta, que possui campos de estudo como programaÃ§Ã£o matemÃ¡tica, redes,
+aplicaÃ§Ãµes combinatÃ³rias entre outros, pode tanto ser objeto da matemÃ¡tica
+pura como aplicada Ã  ciÃªncia da computaÃ§Ã£o, no desenvolvimento de
+algoritmos, por exemplo. Essa Ã¡rea trabalha tambÃ©m, entre outros assuntos,
+com a Teoria dos Grafos – uma forma matemÃ¡tica de estudar diferentes objetos
+de um determinado grupo e suas relaÃ§Ãµes e conexÃµes –, tema do artigo The
+chromatic_thresholds_of_graphs, de 2013 e ganhador do prÃªmio, de autoria de
+Kohayakawa e colegas que participaram do estudo.Â 
+Do IME, tambÃ©m participaram o inglÃªs Peter_Allen e a alemÃ£ Julia_BÃ¶ttcher,
+ambos pÃ³s-doutorandos na Ã©poca com bolsas da FAPESP e supervisionados por
+Kohayakawa. Allen e BÃ¶ttcher sÃ£o casados e hoje sÃ£o professores no
+Departamento de MatemÃ¡tica do London School of Economics and Political
+Science, na Inglaterra.Â 
+Outros dois participantes do estudo foram o inglÃªs Robert Morris, pesquisador
+do Instituto de MatemÃ¡tica Pura e Aplicada (Impa), do Rio de Janeiro, e o
+entÃ£o pÃ³s-doutorando da instituiÃ§Ã£o, o tambÃ©m inglÃªs Simon Griffiths,
+atual professor da PontifÃ­cia Universidade CatÃ³lica do Rio de Janeiro (PUC-
+RJ), que teve bolsa do Conselho Nacional de Desenvolvimento CientÃ­fico e
+TecnolÃ³gico (CNPq).Â 
+“O estudo foi realizado em grande parte no IME, com visitas de Morris e
+Griffiths ao instituto”, conta Kohayakawa. Ele exemplifica do que trata o
+artigo:Â  “Um resultado da Teoria dos Grafos bem conhecido, chamado de Teorema
+das Quatro Cores, diz que mapas podem ser coloridos com quatro cores sem que
+paÃ­ses limÃ­trofes tenham a mesma cor. No estudo ganhador do prÃªmio
+trabalhamos com certos problemas que envolvem essa noÃ§Ã£o de coloraÃ§Ã£o e
+nÃºmero cromÃ¡tico”, disse Ã  AgÃªncia FAPESP.Â 
+Um grafo Ã© uma estrutura matemÃ¡tica usada para identificar a relaÃ§Ã£o entre
+indivÃ­duos dentro de um conjunto. “Os parÃ¢metros da aplicabilidade da
+matemÃ¡tica discreta se tornaram importantes no sÃ©culo 20 com os grafos
+servindo como instrumento de modelagem dentro da ciÃªncia da computaÃ§Ã£o”,
+explicou Kohayakawa.Â 
+Os resultados mostrados no artigo resolveram antigos problemas relativos Ã 
+Teoria dos Grafos propostos pelos matemÃ¡ticos hÃºngaros Paul ErdÃ¶s e MiklÃ³s
+Simonovits e por conjecturas do polonÃªs Tomasz Luczak e do francÃªs Stephan
+ThomassÃ©.Â 
+O PrÃªmio Fulkerson, homenagem ao matemÃ¡tico norte-americano Delbert Ray
+Fulkerson (1924-1976), Ã© concedido desde 1979 a atÃ© trÃªs artigos de cada
+vez. Em 2018, na divulgaÃ§Ã£o dos resultados no 23Âº SimpÃ³sio Internacional de
+ProgramaÃ§Ã£o MatemÃ¡tica, realizado em Bordeaux, FranÃ§a, no inÃ­cio de julho,
+foi concedido mais um, tambÃ©m ganhador de US$ 1.500, para o alemÃ£o Thomas
+Rothvoss, da University of Washington, com o artigo The_matching_polytope_has
+exponential_extension_complexity.
+Â 
+_ _Republicar_
+ 
+****** Republicar ******
+A AgÃªncia FAPESP licencia notÃ­cias via Creative Commons (CC-BY-NC-ND) para
+que possam ser republicadas gratuitamente e de forma simples por outros
+veÃ­culos digitais ou impressos. A AgÃªncia FAPESP deve ser creditada como a
+fonte do conteÃºdo que estÃ¡ sendo republicado e o nome do repÃ³rter (quando
+houver) deve ser atribuÃ­do. O uso do botÃ£o HMTL abaixo permite o atendimento
+a essas normas, detalhadas na PolÃ­tica_de_RepublicaÃ§Ã£o_Digital FAPESP.
+===============================================================================
+Texto HTML
+Marcos de OliveiraÂ  |Â  AgÃªncia FAPESP – O professor Yoshiharu_Kohayakawa, do
+Departamento de CiÃªncia da ComputaÃ§Ã£o do Instituto de MatemÃ¡tica e
+EstatÃ­stica (IME) da Universidade de SÃ£o Paulo (USP), Ã© o primeiro
+brasileiro e latino-americano a ganhar o PrÃªmio_Fulkerson de matemÃ¡tica.
+O prÃªmio Ã© concedido a cada trÃªs anos pela American Mathematical Society
+(MAS) e pela Mathematical Optimization Society (MOS). Um dos mais importantes
+prÃªmios da Ã¡rea, o Fulkerson Ã© destinado a artigos cientÃ­ficos sobre
+matemÃ¡tica discreta, Ã¡rea chamada dessa forma por ser diferente da
+matemÃ¡tica contÃ­nua, que envolve conceitos de cÃ¡lculo diferencial e
+integral, assunto que todos os estudantes universitÃ¡rios da Ã¡rea de exatas
+encontram no comeÃ§o de seus cursos.Â 
+A discreta, que possui campos de estudo como programaÃ§Ã£o matemÃ¡tica, redes,
+aplicaÃ§Ãµes combinatÃ³rias entre outros, pode tanto ser objeto da matemÃ¡tica
+pura como aplicada Ã  ciÃªncia da computaÃ§Ã£o, no desenvolvimento de
+algoritmos, por exemplo. Essa Ã¡rea trabalha tambÃ©m, entre outros assuntos,
+com a Teoria dos Grafos – uma forma matemÃ¡tica de estudar diferentes objetos
+de um determinado grupo e suas relaÃ§Ãµes e conexÃµes –, tema do artigo The
+chromatic_thresholds_of_graphs, de 2013 e ganhador do prÃªmio, de autoria de
+Kohayakawa e colegas que participaram do estudo.Â 
+Do IME, tambÃ©m participaram o inglÃªs Peter_Allen e a alemÃ£ Julia_BÃ¶ttcher,
+ambos pÃ³s-doutorandos na Ã©poca com bolsas da FAPESP e supervisionados por
+Kohayakawa. Allen e BÃ¶ttcher sÃ£o casados e hoje sÃ£o professores no
+Departamento de MatemÃ¡tica do London School of Economics and Political
+Science, na Inglaterra.Â 
+Outros dois participantes do estudo foram o inglÃªs Robert Morris, pesquisador
+do Instituto de MatemÃ¡tica Pura e Aplicada (Impa), do Rio de Janeiro, e o
+entÃ£o pÃ³s-doutorando da instituiÃ§Ã£o, o tambÃ©m inglÃªs Simon Griffiths,
+atual professor da PontifÃ­cia Universidade CatÃ³lica do Rio de Janeiro (PUC-
+RJ), que teve bolsa do Conselho Nacional de Desenvolvimento CientÃ­fico e
+TecnolÃ³gico (CNPq).Â 
+“O estudo foi realizado em grande parte no IME, com visitas de Morris e
+Griffiths ao instituto”, conta Kohayakawa. Ele exemplifica do que trata o
+artigo:Â  “Um resultado da Teoria dos Grafos bem conhecido, chamado de Teorema
+das Quatro Cores, diz que mapas podem ser coloridos com quatro cores sem que
+paÃ­ses limÃ­trofes tenham a mesma cor. No estudo ganhador do prÃªmio
+trabalhamos com certos problemas que envolvem essa noÃ§Ã£o de coloraÃ§Ã£o e
+nÃºmero cromÃ¡tico”, disse Ã  AgÃªncia FAPESP.Â 
+Um grafo Ã© uma estrutura matemÃ¡tica usada para identificar a relaÃ§Ã£o entre
+indivÃ­duos dentro de um conjunto. “Os parÃ¢metros da aplicabilidade da
+matemÃ¡tica discreta se tornaram importantes no sÃ©culo 20 com os grafos
+servindo como instrumento de modelagem dentro da ciÃªncia da computaÃ§Ã£o”,
+explicou Kohayakawa.Â 
+Os resultados mostrados no artigo resolveram antigos problemas relativos Ã 
+Teoria dos Grafos propostos pelos matemÃ¡ticos hÃºngaros Paul ErdÃ¶s e MiklÃ³s
+Simonovits e por conjecturas do polonÃªs Tomasz Luczak e do francÃªs Stephan
+ThomassÃ©.Â 
+O PrÃªmio Fulkerson, homenagem ao matemÃ¡tico norte-americano Delbert Ray
+Fulkerson (1924-1976), Ã© concedido desde 1979 a atÃ© trÃªs artigos de cada
+vez. Em 2018, na divulgaÃ§Ã£o dos resultados no 23Âº SimpÃ³sio Internacional de
+ProgramaÃ§Ã£o MatemÃ¡tica, realizado em Bordeaux, FranÃ§a, no inÃ­cio de julho,
+foi concedido mais um, tambÃ©m ganhador de US$ 1.500, para o alemÃ£o Thomas
+Rothvoss, da University of Washington, com o artigo The_matching_polytope_has
+exponential_extension_complexity.
+Â 
+
+Este texto foi originalmente publicado por AgÃªncia_FAPESP de acordo com a
+licenÃ§a_Creative_Commons_CC-BY-NC-ND. Leia o original_aqui.
+Copiar Texto
+[https://agencia.fapesp.br/agencia-novo/Control/../images/cc-selo.gif]
+Voltar
+***** Ãltimas NotÃ­cias  *****
+
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+***** Mais lidas do mÃªs  *****
+
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+    * [https://agencia.fapesp.br/agencia-novo/Control/../images/loading.gif]
+***** Assuntos mais procurados *****
+
+Voltar ao topo
+AgÃªncia_FAPESP_NotÃ­cias_Agenda_VÃ­deos_Assine_Quem_somos_Fale_com_a_AgÃªncia
+FAPESP_Pesquisa_para_InovaÃ§Ã£o_Reportagens_NotÃ­cias
+FAPESP Instrumentos_de_fomento Chamadas_de_propostas Oportunidades_de_bolsas
+Equipamentos_multiusuÃ¡rios Boas_prÃ¡ticas_cientÃ­ficas PublicaÃ§Ãµes Sobre_a
+FAPESP Converse_com_a_FAPESP
+Outros sites FAPESP Biblioteca_Virtual CEPID CiÃªncia_Aberta Eventos FAPESP_na
+mÃ­dia Revista_Pesquisa_FAPESP
+Fale_com_a_FAPESP Converse_com_a_FAPESP
