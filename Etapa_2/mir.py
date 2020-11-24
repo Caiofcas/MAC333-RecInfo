@@ -46,6 +46,8 @@ def parseArgs():
 
     parser.add_argument('-@', '--instructions', type=argparse.FileType('r'),
                         help='instruction file to be loaded')
+
+    parser.add_argument('-A', '--auxiliary', action='store_true')
     return parser.parse_args()
 
 
@@ -190,12 +192,12 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
     return r_index, n_tokens
 
 
-if __name__ == "__main__":
+def buildAuxiliaryIndex(args):
+    pass
 
+
+def buildMainIndex(args):
     start_time = time.time()
-
-    args = parseArgs()
-
     # deal with instructions
     instructions = {}
     if args.instructions is not None:
@@ -241,3 +243,13 @@ if __name__ == "__main__":
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
           "Informações salvas em {} para carga via pickle."
           .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
+
+
+if __name__ == "__main__":
+
+    args = parseArgs()
+
+    if args.auxiliary:
+        buildAuxiliaryIndex()
+    else:
+        buildMainIndex(args)
