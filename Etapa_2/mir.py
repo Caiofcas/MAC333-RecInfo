@@ -6,6 +6,7 @@ import os
 import pickle
 import re
 import argparse
+import time
 
 # DEBUG = True
 DEBUG = False
@@ -191,6 +192,8 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
 
 if __name__ == "__main__":
 
+    start_time = time.time()
+
     args = parseArgs()
 
     # deal with instructions
@@ -230,6 +233,7 @@ if __name__ == "__main__":
         pickler.dump(filelist)
         pickler.dump(r_index)
         pickler.dump(encoding_dic)
+        pickler.dump(start_time)
 
     # Print statements
 
