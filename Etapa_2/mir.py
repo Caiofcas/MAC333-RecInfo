@@ -8,6 +8,7 @@ import re
 import argparse
 import time
 
+from mirs import unpickle
 # DEBUG = True
 DEBUG = False
 
@@ -193,6 +194,11 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
 
 
 def buildAuxiliaryIndex(args):
+    current_time = time.time()
+    filelist = getFileList(args.dir, {})
+
+    old_filelist, old_index, old_encoding_d, old_time = unpickle(args.dir)
+
     pass
 
 
