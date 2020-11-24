@@ -36,6 +36,7 @@ def unpickle(rootdir):
         filelist = unpickler.load()
         r_index = unpickler.load()
         encoding_dic = unpickler.load()
+        index_time = unpickler.load()
 
     if DEBUG:
         print(filelist)
@@ -47,7 +48,7 @@ def unpickle(rootdir):
               len(r_index),
               len(filelist)
           ))
-    return filelist, r_index, encoding_dic
+    return filelist, r_index, encoding_dic, index_time
 
 
 if __name__ == "__main__":
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     if DEBUG:
         print(args)
 
-    filelist, r_index, enconding_dic = unpickle(args.dir)
+    filelist, r_index, enconding_dic, index_time = unpickle(args.dir)
 
     tokens = [x for x in r_index.keys()]
     tokens.sort()
