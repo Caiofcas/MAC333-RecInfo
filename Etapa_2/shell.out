@@ -1,0 +1,136 @@
+[user@local] date
+qua nov 18 12:12:10 -03 2020
+[user@local] rm -v diretório/mir*
+removido 'diretório/mira.pickle'
+removido 'diretório/mira.rem'
+removido 'diretório/mir.pickle'
+[user@local] tar xvzf arquivos.tgz diretório/arq0.txt diretório/arq1.txt
+diretório/arq0.txt
+diretório/arq1.txt
+[user@local] cat instruc.lst
+@u subdirA/subdirB/arq5.txt
+@x subdirA/subdirB
+@x xarq7.txt
+[user@local] ./mir.py -@ instruc.lst diretório
+Instruções ao indexador tomadas de instruc.lst
+
+Lista dos arquivos com extensão .txt encontrados pela sub-árvore do diretório: diretório
+0 arq0.txt
+1 arq1.txt
+2 arq2.txt
+3 subdirA/arq3.txt
+4 subdirA/arq4.txt
+Diretório subdirA/subdirB excluído da indexação
+5 subdirC/arq6.txt
+Arquivo xarq7.txt excluído da indexação
+6 zoutroarq8.txt
+Foram encontrados 7 documentos.
+
+Os 7 documentos foram processados e produziram um total de 6942 tokens,
+que usaram um vocabulário com 1207 tokens distintos.
+Informações salvas em diretório/mir.pickle para carga via pickle.
+[user@local] touch diretório/arq0.txt
+[user@local] rm diretório/arq1.txt
+[user@local] ls -l diretório/arq*.txt
+-rw-rw-r-- 1 alair alair 11993 nov 18 12:13 diretório/arq0.txt
+-rw-rw-r-- 1 alair alair 11377 out 14 07:28 diretório/arq2.txt
+[user@local] ./mir.py -A -g 0 diretório/
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+Foram carregados os nomes de 7 documentos.
+Lista atual dos arquivos com extensão .txt encontrados pela sub-árvore do diretório: diretório/
+0 arq0.txt
+1 arq2.txt
+2 subdirA/arq3.txt
+3 subdirA/arq4.txt
+4 subdirA/subdirB/arq5.txt
+5 subdirC/arq6.txt
+6 xarq7.txt
+7 zoutroarq8.txt
+Agora foram encontrados 8 documentos.
+De 7 para 8, foram acrescentados 2 arquivos novos e removidos 1.
+Permaneceram 6 arquivos. Dos quais, 1 foram atualizados.
+Temos 3 arquivos atualizados ou novos a serem indexados no índice auxiliar:
+0 arq0.txt
+1 subdirA/subdirB/arq5.txt
+2 xarq7.txt
+[user@local] ./mir.py -A -v -t 2 diretório/
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+Foram carregados os nomes de 7 documentos.
+Lista atual dos arquivos com extensão .txt encontrados pela sub-árvore do diretório: diretório/
+0 arq0.txt
+1 arq2.txt
+2 subdirA/arq3.txt
+3 subdirA/arq4.txt
+4 subdirA/subdirB/arq5.txt
+5 subdirC/arq6.txt
+6 xarq7.txt
+7 zoutroarq8.txt
+Agora foram encontrados 8 documentos.
+De 7 para 8, foram acrescentados 2 arquivos novos e removidos 1.
+Permaneceram 6 arquivos. Dos quais, 1 foram atualizados.
+Temos 3 arquivos atualizados ou novos a serem indexados no índice auxiliar:
+0 arq0.txt
+1 subdirA/subdirB/arq5.txt
+2 xarq7.txt
+
+Os 3 documentos foram processados e produziram um total de 2201 tokens,
+que usaram um vocabulário com 617 tokens distintos.
+Informações salvas em diretório/mira.pickle para carga via pickle.
+Lista com 1 remoções salva em diretório/mira.rem
+
+  DF  Termo/Token     Lista de incidência com IDs dos arquivos
+   2  a               [0, 2]
+   2  agencia         [0, 2]
+Listados 2 / 617 tokens, ordenados decrescentemente por freq. de documento (df).
+[user@local] ls -ltr diretório/mir*
+-rw-rw-r-- 1 alair alair 34603 nov 18 12:12 diretório/mir.pickle
+-rw-rw-r-- 1 alair alair    12 nov 18 12:13 diretório/mira.rem
+-rw-rw-r-- 1 alair alair 15805 nov 18 12:13 diretório/mira.pickle
+[user@local] cat diretório/mira.rem
+@x arq1.txt
+[user@local] ./mirs.py -r '.*ã$' -t 5 diretório/
+Instruções de exclusão ao indexador tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Palavras que satisfazem a REGEX ".*ã$"
+Total:   1304	Regex:     51	Não regex:   1253	Razão: 24.569
+
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    2  alemã           [2, 7]
+    1  agã             [7]
+    1  aplicaã         [7]
+    1  atribuã         [7]
+    1  atã             [7]
+Acima estão os 5 tokens mais frequentes satisfazendo REGEX ".*ã$".
+Presente(s) em 2 arquivo(s).
+5 7 utf-8 0.99 arq0.txt
+1 2 utf-8 0.99 arq2.txt
+[user@local] ./mirs.py diretório/ primeiro prêmio º matemática
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjugação das listas de incidência dos 4 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    3  º               [2, 6, 9]
+    4  primeiro        [2, 4, 7, 9]
+    4  prêmio          [2, 4, 5, 9]
+    6  matemática      [2, 3, 4, 5, 6, 9]
+São 2 os documentos com os 4 termos
+    2  arq2.txt
+    9  xarq7.txt
+[user@local]
+
