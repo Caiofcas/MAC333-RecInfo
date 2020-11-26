@@ -195,11 +195,40 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
 
 def buildAuxiliaryIndex(args):
     current_time = time.time()
+
+    old_filelist, old_index, old_encoding_d, old_time = unpickle(
+        args.dir, out=False)
+
+    old_size = len(old_filelist)
+    termos = len(old_index)
+
+    print(
+        "MIR (My Information Retrieval System) de {0}/mir.pickle"
+        " com {1} termos e {2} documentos\nForam carregados os nomes de {2} documentos."
+        "Lista atual dos arquivos com extensão .txt encontrados pela sub-árvore"
+        " do diretório: {0}"
+        .format(args.dir, termos, old_size))
+
     filelist = getFileList(args.dir, {})
+    new_size = len(filelist)
 
-    old_filelist, old_index, old_encoding_d, old_time = unpickle(args.dir)
+    print("Agora foram encontrados {} documentos.".format(len(filelist)))
+    print("")
+    # find diferences
+    diff = {}
+    for fn in filelist:
+        if fn in old_filelist:
+            file_path = os.path.join(args.dir, fn)
+            if old_encoding_d[fn]['modificado'] != os.path.getmtime(file_path):
+                diff[fn] = 'modificado'
+        else:
+            diff[fn] = 'novo'
 
-    pass
+    for fn in old_filelist:
+        if not fn in filelist:
+            diff[fn] = 'removido'
+
+    print(diff)
 
 
 def buildMainIndex(args):
@@ -256,6 +285,6 @@ if __name__ == "__main__":
     args = parseArgs()
 
     if args.auxiliary:
-        buildAuxiliaryIndex()
+        buildAuxiliaryIndex(args)
     else:
         buildMainIndex(args)

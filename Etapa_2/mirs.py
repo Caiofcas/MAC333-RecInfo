@@ -25,7 +25,7 @@ def getArgs():
     return parser.parse_args()
 
 
-def unpickle(rootdir):
+def unpickle(rootdir, out=True):
     picklefn = '{}/mir.pickle'.format(rootdir)
 
     with open(picklefn, 'rb') as handle:
@@ -42,12 +42,13 @@ def unpickle(rootdir):
         print(filelist)
         print(encoding_dic)
 
-    print("MIR (My Information Retrieval System) de {}\n"
-          "com {} termos e {} documentos\n".format(
-              picklefn,
-              len(r_index),
-              len(filelist)
-          ))
+    if out:
+        print("MIR (My Information Retrieval System) de {}\n"
+              "com {} termos e {} documentos\n".format(
+                  picklefn,
+                  len(r_index),
+                  len(filelist)
+              ))
     return filelist, r_index, encoding_dic, index_time
 
 
