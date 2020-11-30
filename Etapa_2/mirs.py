@@ -132,7 +132,8 @@ if __name__ == "__main__":
 
         docs = set()
         for tok, count in top_tokens:
-            print('\t{:2d}\t{: <10}\t{}'.format(count, tok, r_index[tok]))
+            print('\t{:2d}\t{: <10}\t{}'.format(
+                count, tok, [x[0] for x in r_index[tok]]))
             for i in r_index[tok]:
                 docs.add(i)
 
@@ -147,8 +148,12 @@ if __name__ == "__main__":
         args.tokens[0].sort(reverse=True)
 
         for tok in args.tokens[0]:
-            print('\t{:2d}\t{: <10}\t{}'.format(
-                counter[tok], tok, r_index[tok]))
+            ind = r_index.get(tok)
+            if ind is not None:
+                print('\t{:2d}\t{: <10}\t{}'.format(
+                    counter[tok], tok, [x[0] for x in r_index[tok]]))
+            else:
+                print('\tToken {} não encontrado.'.format(tok))
 
         docs = [
             (i, fn)
