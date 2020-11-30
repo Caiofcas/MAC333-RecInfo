@@ -175,7 +175,7 @@ def getTokens(fn, rootdir, enc):
     return token_freq, encoding
 
 
-def buildReverseIndex(files, rootdir, encoding_dic, instructions):
+def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
     r_index = {}  # token : list of (fileID, freq)
     n_tokens = 0
 
@@ -189,6 +189,24 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
                 r_index[t] = [(c, token_freq[t])]
             else:
                 r_index[t].append((c, token_freq[t]))
+
+    # Save index
+
+    picklefn = '{}/{}.pickle'.format(args.dir, index_name)
+    with open(picklefn, 'w+b') as picklefile:
+        pickler = pickle.Pickler(picklefile)
+        pickler.dump('MIR 2.0')
+        pickler.dump(files)
+        pickler.dump(r_index)
+        pickler.dump(encoding_dic)
+        pickler.dump(ind_time)
+
+    # Print statements
+
+    print("Os {} documentos foram processados e produziram um total de "
+          "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
+          "Informações salvas em {} para carga via pickle."
+          .format(len(files), n_tokens, len(r_index.keys()), picklefn))
 
     return r_index, n_tokens
 
@@ -257,25 +275,25 @@ def buildAuxiliaryIndex(args):
     aux_encoding_dic = getEncodingDict(aux_files, args.dir, {}, args.v)
 
     r_index, ntokens = buildReverseIndex(
-        aux_files, args.dir, aux_encoding_dic, {})
+        aux_files, args.dir, aux_encoding_dic, 'mira', current_time)
 
-    # Save index
+    # # Save index
 
-    picklefn = '{}/mira.pickle'.format(args.dir)
-    with open(picklefn, 'w+b') as picklefile:
-        pickler = pickle.Pickler(picklefile)
-        pickler.dump('MIR 2.0')
-        pickler.dump(filelist)
-        pickler.dump(r_index)
-        pickler.dump(aux_encoding_dic)
-        pickler.dump(current_time)
+    # picklefn = '{}/mira.pickle'.format(args.dir)
+    # with open(picklefn, 'w+b') as picklefile:
+    #     pickler = pickle.Pickler(picklefile)
+    #     pickler.dump('MIR 2.0')
+    #     pickler.dump(filelist)
+    #     pickler.dump(r_index)
+    #     pickler.dump(aux_encoding_dic)
+    #     pickler.dump(current_time)
 
-    # Print statements
+    # # Print statements
 
-    print("Os {} documentos foram processados e produziram um total de "
-          "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
-          "Informações salvas em {} para carga via pickle."
-          .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
+    # print("Os {} documentos foram processados e produziram um total de "
+    #       "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
+    #       "Informações salvas em {} para carga via pickle."
+    #       .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
 
 
 def buildMainIndex(args):
@@ -306,25 +324,7 @@ def buildMainIndex(args):
     # Construct index
 
     r_index, ntokens = buildReverseIndex(
-        filelist, args.dir, encoding_dic, instructions)
-
-    # Save index
-
-    picklefn = '{}/mir.pickle'.format(args.dir)
-    with open(picklefn, 'w+b') as picklefile:
-        pickler = pickle.Pickler(picklefile)
-        pickler.dump('MIR 2.0')
-        pickler.dump(filelist)
-        pickler.dump(r_index)
-        pickler.dump(encoding_dic)
-        pickler.dump(start_time)
-
-    # Print statements
-
-    print("Os {} documentos foram processados e produziram um total de "
-          "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
-          "Informações salvas em {} para carga via pickle."
-          .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
+        filelist, args.dir, encoding_dic, 'mir', start_time)
 
 
 if __name__ == "__main__":
