@@ -70,6 +70,54 @@ def printEndMsg(args, top_tokens: int, docs_size: int):
     print(end_msg)
 
 
+def filterTokens(args, counter: Counter, out: bool = True):
+
+    if args.r is not None:
+        counter_filtered = Counter({
+            tok: counter[tok]
+            for tok in counter
+            if args.r.search(tok)
+        })
+
+        total = len(counter)
+        matched = len(counter_filtered)
+        not_matched = total - matched
+
+        if out:
+            print("Palavras que satisfazem a REGEX \"{}\"\n"
+                  "Total: {: >7d} Regex: {: >7d} "
+                  "Não regex: {: >7d} Razão: {:.3f}\n"
+                  .format(
+                      args.r.pattern,
+                      total, matched,
+                      not_matched, not_matched/matched
+                  ))
+    elif args.R is not None:
+        counter_filtered = Counter({
+            tok: counter[tok]
+            for tok in counter
+            if not args.R.search(tok)
+        })
+
+        total = len(counter)
+        not_matched = len(counter_filtered)
+        matched = total - not_matched
+
+        if out:
+            print("Palavras que NÃO satisfazem a REGEX \"{}\"\n"
+                  "Total: {: >7d} Não regex: {: >7d} "
+                  "Regex: {: >7d} Razão: {:.3f}\n"
+                  .format(
+                      args.R.pattern,
+                      total, not_matched,
+                      matched, matched/not_matched
+                  ))
+    else:
+        counter_filtered = counter
+
+    return counter_filtered
+
+
 if __name__ == "__main__":
 
     args = getArgs()
@@ -85,47 +133,7 @@ if __name__ == "__main__":
 
     if args.t is not None:
 
-        if args.r is not None:
-            counter_filtered = Counter({
-                tok: counter[tok]
-                for tok in counter
-                if args.r.search(tok)
-            })
-
-            total = len(counter)
-            matched = len(counter_filtered)
-            not_matched = total - matched
-
-            print("Palavras que satisfazem a REGEX \"{}\"\n"
-                  "Total: {: >7d} Regex: {: >7d} "
-                  "Não regex: {: >7d} Razão: {:.3f}\n"
-                  .format(
-                      args.r.pattern,
-                      total, matched,
-                      not_matched, not_matched/matched
-                  ))
-        elif args.R is not None:
-            counter_filtered = Counter({
-                tok: counter[tok]
-                for tok in counter
-                if not args.R.search(tok)
-            })
-
-            total = len(counter)
-            not_matched = len(counter_filtered)
-            matched = total - not_matched
-
-            print("Palavras que NÃO satisfazem a REGEX \"{}\"\n"
-                  "Total: {: >7d} Não regex: {: >7d} "
-                  "Regex: {: >7d} Razão: {:.3f}\n"
-                  .format(
-                      args.R.pattern,
-                      total, not_matched,
-                      matched, matched/not_matched
-                  ))
-        else:
-            counter_filtered = counter
-
+        counter_filtered = filterTokens(args, counter)
         top_tokens = counter_filtered.most_common(args.t)
 
         print('\tDF\tTermo/Token\tLista de incidência com IDs dos arquivos')
