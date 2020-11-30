@@ -26,7 +26,7 @@ def getArgs():
 
 
 def unpickle(rootdir, out=True, ind_name='mir'):
-    picklefn = '{}/{}.pickle'.format(rootdir)
+    picklefn = '{}/{}.pickle'.format(rootdir, ind_name)
 
     with open(picklefn, 'rb') as handle:
         unpickler = pickle.Unpickler(handle)

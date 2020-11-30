@@ -233,7 +233,7 @@ def buildAuxiliaryIndex(args, current_time):
 
     print(
         "MIR (My Information Retrieval System) de {0}/mir.pickle"
-        " com {1} termos e {2} documentos\nForam carregados os nomes de {2} documentos."
+        " com {1} termos e {2} documentos\nForam carregados os nomes de {2} documentos.\n"
         "Lista atual dos arquivos com extensão .txt encontrados pela sub-árvore"
         " do diretório: {0}"
         .format(args.dir, len(old_index), old_size))
@@ -254,10 +254,8 @@ def buildAuxiliaryIndex(args, current_time):
             # Modificado recentemente
             if old_encoding_d[fn]['modificado'] != os.path.getmtime(file_path):
                 mod_n += 1
-                print('modificado:', fn)
                 aux_files.append(fn)
         else:
-            print('novo:', fn)
             aux_files.append(fn)
             new_n += 1
 
@@ -287,6 +285,11 @@ def buildAuxiliaryIndex(args, current_time):
 
     r_index, ntokens = buildReverseIndex(
         aux_files, args.dir, aux_encoding_dic, 'mira', current_time)
+
+    with open('{}/mira.rem'.format(args.dir), 'w+') as handle:
+        handle.writelines(['@x {}'.format(fn) for fn in rm_files])
+        handle.write('\n')
+    print("Lista com {} remoções salva em {}/mira.rem".format(rem_n, args.dir))
 
 
 if __name__ == "__main__":
