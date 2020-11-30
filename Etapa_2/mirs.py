@@ -26,6 +26,14 @@ def getArgs():
     return parser.parse_args()
 
 
+def getIndex(l: list, v):
+    for i, item in enumerate(l):
+        if item[0] == v:
+            return i
+
+    return -1
+
+
 def unpickle(rootdir, out=True, ind_name='mir'):
     picklefn = '{}/{}.pickle'.format(rootdir, ind_name)
 
@@ -101,7 +109,35 @@ def removeDeletedFiles(filelist, r_index, rootdir):
 
 
 def combineIndexes(main_fl, main_rind, aux_fl, aux_rind):
-    return main_fl, main_rind
+    filelist = main_fl
+    mapping = {}
+    for c, fn in enumerate(aux_fl):
+        if fn in main_fl:
+            mapping[c] = main_fl.index(fn)
+        else:
+            mapping[c] = len(main_fl)
+            main_fl.append(fn)
+
+    r_index = main_rind
+    for tok, aux_val in aux_rind.items():
+
+        # converet to new indexes
+        aux_val = [(mapping[c], token_freq) for c, token_freq in aux_val]
+
+        main_val = r_index.get(tok)
+
+        if main_val is not None:
+            for c, freq in aux_val:
+                i = getIndex(main_val, c)
+                if i >= 0:
+                    main_val[i] = (c, freq)
+                else:
+                    main_val.append((c, freq))
+        else:
+            main_val = aux_val
+        r_index[tok] = main_val
+
+    return filelist, r_index
 
 
 def loadCombinedIndex(args):
