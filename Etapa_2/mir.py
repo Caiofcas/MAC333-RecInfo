@@ -277,24 +277,6 @@ def buildAuxiliaryIndex(args):
     r_index, ntokens = buildReverseIndex(
         aux_files, args.dir, aux_encoding_dic, 'mira', current_time)
 
-    # # Save index
-
-    # picklefn = '{}/mira.pickle'.format(args.dir)
-    # with open(picklefn, 'w+b') as picklefile:
-    #     pickler = pickle.Pickler(picklefile)
-    #     pickler.dump('MIR 2.0')
-    #     pickler.dump(filelist)
-    #     pickler.dump(r_index)
-    #     pickler.dump(aux_encoding_dic)
-    #     pickler.dump(current_time)
-
-    # # Print statements
-
-    # print("Os {} documentos foram processados e produziram um total de "
-    #       "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
-    #       "Informações salvas em {} para carga via pickle."
-    #       .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
-
 
 def buildMainIndex(args):
     start_time = time.time()
