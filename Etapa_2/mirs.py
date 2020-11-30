@@ -52,6 +52,24 @@ def unpickle(rootdir, out=True, ind_name='mir'):
     return filelist, r_index, encoding_dic, index_time
 
 
+def printEndMsg(args, top_tokens: int, docs_size: int):
+    if args.r is not None:
+        end_msg = "Acima estão os {} tokens mais ".format(top_tokens)
+        end_msg += "frequentes satisfazendo REGEX "
+        end_msg += "\"{}\". ".format(args.r.pattern)
+        end_msg += "Presente(s) em {} arquivo(s).".format(docs_size)
+    elif args.R is not None:
+        end_msg = "Acima estão os {} tokens mais ".format(top_tokens)
+        end_msg += "frequentes NÃO satisfazendo REGEX "
+        end_msg += "\"{}\". ".format(args.R.pattern)
+        end_msg += "Presente(s) em {} arquivo(s).".format(docs_size)
+    else:
+        end_msg = "Listados {} tokens, ".format(top_tokens)
+        end_msg += "ordenados decrescentemente por freq. de documento(DF)."
+
+    print(end_msg)
+
+
 if __name__ == "__main__":
 
     args = getArgs()
@@ -118,21 +136,7 @@ if __name__ == "__main__":
             for i in r_index[tok]:
                 docs.add(i)
 
-        if args.r is not None:
-            end_msg = "Acima estão os {} tokens mais ".format(len(top_tokens))
-            end_msg += "frequentes satisfazendo REGEX "
-            end_msg += "\"{}\". ".format(args.r.pattern)
-            end_msg += "Presente(s) em {} arquivo(s).".format(len(docs))
-        elif args.R is not None:
-            end_msg = "Acima estão os {} tokens mais ".format(len(top_tokens))
-            end_msg += "frequentes NÃO satisfazendo REGEX "
-            end_msg += "\"{}\". ".format(args.R.pattern)
-            end_msg += "Presente(s) em {} arquivo(s).".format(len(docs))
-        else:
-            end_msg = "Listados {} tokens, ".format(len(top_tokens))
-            end_msg += "ordenados decrescentemente por freq. de documento(DF)."
-
-        print(end_msg)
+        printEndMsg(args, len(top_tokens), len(docs))
 
     if args.tokens != [[]]:
         print("\nConjugação das listas de incidência dos {} termos seguintes."
