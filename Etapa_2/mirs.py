@@ -81,6 +81,29 @@ def printStartMsg(rootdir, aux, rem):
               "'{0}/mira.pickle')".format(rootdir))
 
 
+def removeDeletedFiles(filelist, r_index, rootdir):
+
+    with open('{}/mira.rem'.format(args.dir), 'r') as handle:
+        rm_files = [line.split()[-1] for line in handle.readlines()]
+
+    rm_ind = [filelist.index(x) for x in rm_files]
+    new_filelist = [fn for fn in filelist if not fn in rm_files]
+    mapping = {filelist.index(fn): new_filelist.index(fn)
+               for fn in new_filelist}
+
+    for tok in r_index:
+        l = r_index[tok]
+        l = [(mapping[file_c], count)
+             for (file_c, count) in l if not file_c in rm_ind]
+        r_index[tok] = l
+
+    return filelist, r_index
+
+
+def combineIndexes(main_fl, main_rind, aux_fl, aux_rind):
+    return main_fl, main_rind
+
+
 def loadCombinedIndex(args):
     hasAux = os.path.isfile(os.path.join(args.dir, 'mira.pickle'))
     hasRem = os.path.isfile(os.path.join(args.dir, 'mira.rem'))
@@ -88,13 +111,13 @@ def loadCombinedIndex(args):
     printStartMsg(args.dir, hasAux, hasRem)
     filelist, r_index, _, _ = unpickle(args.dir)
 
+    if hasRem:
+        filelist, r_index = removeDeletedFiles(filelist, r_index, args.dir)
+
     if hasAux:
         aux_filelist, aux_index, _, _ = unpickle(args.dir, ind_name='mira')
-    if hasRem:
-        with open('{}/mira.rem'.format(args.dir), 'r') as handle:
-            rm_files = [line.split()[-1] for line in handle.readlines()]
-
-    # Combine
+        filelist, r_index = combineIndexes(
+            filelist, r_index, aux_filelist, aux_index)
 
     return filelist, r_index
 
