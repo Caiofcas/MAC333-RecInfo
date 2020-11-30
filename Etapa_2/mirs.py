@@ -95,13 +95,19 @@ def removeDeletedFiles(filelist, r_index, rootdir):
         rm_files = [line.split()[-1] for line in handle.readlines()]
 
     rm_ind = [filelist.index(x) for x in rm_files]
-    new_filelist = [fn for fn in filelist if not fn in rm_files]
-    mapping = {filelist.index(fn): new_filelist.index(fn)
-               for fn in new_filelist}
+    # new_filelist = [fn for fn in filelist if not fn in rm_files]
+    # mapping = {filelist.index(fn): new_filelist.index(fn)
+    #            for fn in new_filelist}
+
+    # for tok in r_index:
+    #     l = r_index[tok]
+    #     l = [(mapping[file_c], count)
+    #          for (file_c, count) in l if not file_c in rm_ind]
+    #     r_index[tok] = l
 
     for tok in r_index:
         l = r_index[tok]
-        l = [(mapping[file_c], count)
+        l = [(file_c, count)
              for (file_c, count) in l if not file_c in rm_ind]
         r_index[tok] = l
 
@@ -251,13 +257,15 @@ if __name__ == "__main__":
             else:
                 print('\tToken {} não encontrado.'.format(tok))
 
-        docs = [
-            (i, fn)
-            for i, fn in enumerate(filelist)
-            if all((
-                (i in r_index[tok]) for tok in args.tokens[0]
-            ))
-        ]
+        docs = []
+        for i, fn in enumerate(filelist):
+            if all([
+                any([
+                    i == c
+                    for c, _ in r_index[tok]])
+                for tok in args.tokens[0]
+            ]):
+                docs.append((i, fn))
 
         print("São {} os documentos com os {} termos"
               .format(len(docs), len(args.tokens[0])))
