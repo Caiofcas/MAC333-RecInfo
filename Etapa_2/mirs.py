@@ -25,8 +25,8 @@ def getArgs():
     return parser.parse_args()
 
 
-def unpickle(rootdir, out=True):
-    picklefn = '{}/mir.pickle'.format(rootdir)
+def unpickle(rootdir, out=True, ind_name='mir'):
+    picklefn = '{}/{}.pickle'.format(rootdir)
 
     with open(picklefn, 'rb') as handle:
         unpickler = pickle.Unpickler(handle)
