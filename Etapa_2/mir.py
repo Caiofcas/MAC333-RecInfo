@@ -52,6 +52,19 @@ def parseArgs():
     return parser.parse_args()
 
 
+def parseInstructions(instrct_list):
+    if instrct_list is not None:
+        instructions = dict((line.split()[::-1]
+                             for line in instrct_list.readlines()))
+        print("Instruções ao indexador tomadas de instruc.lst")
+        for fn in instructions:
+            print("{} {}".format(instructions[fn], fn))
+        print()
+
+        return instructions
+    return {}
+
+
 def getFileList(rootdir, instructions):
     ori_filelist = []
     for subdir, dirs, files in os.walk(rootdir):
@@ -211,21 +224,19 @@ def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
     return r_index, n_tokens
 
 
-def buildAuxiliaryIndex(args):
-    current_time = time.time()
+def buildAuxiliaryIndex(args, current_time):
 
     old_filelist, old_index, old_encoding_d, _ = unpickle(
         args.dir, out=False)
 
     old_size = len(old_filelist)
-    termos = len(old_index)
 
     print(
         "MIR (My Information Retrieval System) de {0}/mir.pickle"
         " com {1} termos e {2} documentos\nForam carregados os nomes de {2} documentos."
         "Lista atual dos arquivos com extensão .txt encontrados pela sub-árvore"
         " do diretório: {0}"
-        .format(args.dir, termos, old_size))
+        .format(args.dir, len(old_index), old_size))
 
     filelist = getFileList(args.dir, {})
 
@@ -278,42 +289,33 @@ def buildAuxiliaryIndex(args):
         aux_files, args.dir, aux_encoding_dic, 'mira', current_time)
 
 
-def buildMainIndex(args):
-    start_time = time.time()
-    # deal with instructions
-    instructions = {}
-    if args.instructions is not None:
-        instructions = dict((line.split()[::-1]
-                             for line in args.instructions.readlines()))
-        print("Instruções ao indexador tomadas de instruc.lst")
-        for fn in instructions:
-            print("{} {}".format(instructions[fn], fn))
-        print()
-
-    # Get list of txt documents
-
-    print("Lista de arquivos .txt encontrados na "
-          "sub-árvore do diretório: {}".format(args.dir))
-
-    filelist = getFileList(args.dir, instructions)
-
-    print("Foram encontrados {} documentos.\n".format(len(filelist)))
-
-    # Get encoding dict for all files:
-
-    encoding_dic = getEncodingDict(filelist, args.dir, instructions, args.v)
-
-    # Construct index
-
-    r_index, ntokens = buildReverseIndex(
-        filelist, args.dir, encoding_dic, 'mir', start_time)
-
-
 if __name__ == "__main__":
+
+    start_time = time.time()
 
     args = parseArgs()
 
     if args.auxiliary:
-        buildAuxiliaryIndex(args)
+        buildAuxiliaryIndex(args, start_time)
     else:
-        buildMainIndex(args)
+        # deal with instructions
+        instructions = parseInstructions(args.instructions)
+
+        # Get list of txt documents
+
+        print("Lista de arquivos .txt encontrados na "
+              "sub-árvore do diretório: {}".format(args.dir))
+
+        filelist = getFileList(args.dir, instructions)
+
+        print("Foram encontrados {} documentos.\n".format(len(filelist)))
+
+        # Get encoding dict for all files:
+
+        encoding_dic = getEncodingDict(
+            filelist, args.dir, instructions, args.v)
+
+        # Construct index
+
+        r_index, ntokens = buildReverseIndex(
+            filelist, args.dir, encoding_dic, 'mir', start_time)
