@@ -1,0 +1,200 @@
+# -*- utf-8 -*-
+[user@local] rm -v diretório/mir* 2>/dev/null
+removido 'diretório/mira.pickle'
+removido 'diretório/mirap.pickle'
+removido 'diretório/mira.rem'
+removido 'diretório/mir.pickle'
+removido 'diretório/mirp.pickle'
+[user@local] tar xvzf arquivos.tgz diretório/arq0.txt diretório/arq1.txt
+diretório/arq0.txt
+diretório/arq1.txt
+[user@local] ./mir.py -@ instruc.lst diretório/ 
+Instruções ao indexador tomadas de instruc.lst
+
+Lista dos arquivos com extensão .txt encontrados pela sub-árvore do diretório: diretório/
+0 arq0.txt
+1 arq1.txt
+2 arq2.txt
+3 subdirA/arq3.txt
+4 subdirA/arq4.txt
+Diretório subdirA/subdirB excluído da indexação
+5 subdirC/arq6.txt
+Arquivo xarq7.txt excluído da indexação
+6 zoutroarq8.txt
+Foram encontrados 7 documentos.
+
+Os 7 documentos foram processados e produziram um total de 6942 tokens,
+que usaram um vocabulário com 1207 tokens distintos.
+Informações salvas em diretório/mir.pickle para carga via pickle.
+Salvas um total de 6942 posições na lista geral de posições diretório/mirp.pickle
+[user@local] touch diretório/arq0.txt
+[user@local] rm diretório/arq1.txt
+[user@local] ./mir.py -A diretório/ 
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+Foram carregados os nomes de 7 documentos.
+Lista atual dos arquivos com extensão .txt encontrados pela sub-árvore do diretório: diretório/
+0 arq0.txt
+1 arq2.txt
+2 subdirA/arq3.txt
+3 subdirA/arq4.txt
+4 subdirA/subdirB/arq5.txt
+5 subdirC/arq6.txt
+6 xarq7.txt
+7 zoutroarq8.txt
+Agora foram encontrados 8 documentos.
+De 7 para 8, foram acrescentados 2 arquivos novos e removidos 1.
+Permaneceram 6 arquivos. Dos quais, 1 foram atualizados.
+Temos 3 arquivos atualizados ou novos a serem indexados no índice auxiliar:
+0 arq0.txt
+1 subdirA/subdirB/arq5.txt
+2 xarq7.txt
+
+Os 3 documentos foram processados e produziram um total de 2201 tokens,
+que usaram um vocabulário com 617 tokens distintos.
+Informações salvas em diretório/mira.pickle para carga via pickle.
+Salvas um total de 2201 posições na lista geral de posições diretório/mirap.pickle
+Lista com 1 remoções salva em diretório/mira.rem
+[user@local] ./mirs.py diretório/ prêmio internacional ime
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjunção das listas de incidência dos 3 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    4  prêmio          [2, 4, 5, 9]
+    4  internacional   [2, 4, 5, 7]
+    7  ime             [2, 3, 4, 5, 6, 7, 9]
+São 3 os documentos com os 3 termos
+    2  arq2.txt
+    4  subdirA/arq4.txt
+    5  subdirC/arq6.txt
+[user@local] ./mirs.py -o 1 diretório/ prêmio internacional ime
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjunção das listas de incidência dos 3 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    4  prêmio          [2, 4, 5, 9]
+    4  internacional   [2, 4, 5, 7]
+    7  ime             [2, 3, 4, 5, 6, 7, 9]
+São 3 os documentos com os 3 termos
+    2    0.33  arq2.txt
+    4    0.24  subdirA/arq4.txt
+    5    0.22  subdirC/arq6.txt
+[user@local] ./mirs.py -o 2 diretório/ prêmio internacional ime
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjunção das listas de incidência dos 3 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    4  prêmio          [2, 4, 5, 9]
+    4  internacional   [2, 4, 5, 7]
+    7  ime             [2, 3, 4, 5, 6, 7, 9]
+São 3 os documentos com os 3 termos
+    2    0.33  arq2.txt
+    4    0.24  subdirA/arq4.txt
+    5    0.22  subdirC/arq6.txt
+[user@local] ./mirs.py -o 3 diretório/ prêmio internacional ime
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjunção das listas de incidência dos 3 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    4  prêmio          [2, 4, 5, 9]
+    4  internacional   [2, 4, 5, 7]
+    7  ime             [2, 3, 4, 5, 6, 7, 9]
+São 3 os documentos com os 3 termos
+Lista posicional principal com 6942 posições carregada
+Lista posicional auxiliar com 2201 posições carregada
+    2     4  arq2.txt
+    5    45  subdirC/arq6.txt
+    4   106  subdirA/arq4.txt
+[user@local] ./mirs.py -o 4 diretório/ prêmio internacional ime
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjunção das listas de incidência dos 3 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    4  prêmio          [2, 4, 5, 9]
+    4  internacional   [2, 4, 5, 7]
+    7  ime             [2, 3, 4, 5, 6, 7, 9]
+São 3 os documentos com os 3 termos
+Lista posicional principal com 6942 posições carregada
+Lista posicional auxiliar com 2201 posições carregada
+    2     1  arq2.txt
+    4    17  subdirA/arq4.txt
+    5    19  subdirC/arq6.txt
+[user@local] ./mirs.py -o 3 -v diretório/ prêmio internacional ime
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjunção das listas de incidência dos 3 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    4  prêmio          [2, 4, 5, 9]
+    4  internacional   [2, 4, 5, 7]
+    7  ime             [2, 3, 4, 5, 6, 7, 9]
+São 3 os documentos com os 3 termos
+Lista posicional principal com 6942 posições carregada
+Lista posicional auxiliar com 2201 posições carregada
+    2     4  arq2.txt   5-9 kohayakawa professor no ime usp ganha prêmio internacional em matemática agência 
+    5    45  subdirC/arq6.txt   39-84 foto pesquisador do ime usp que sugere o uso de um novo modelo teórico para análise de algoritmos utilizados em redes de sensores sem fio ganha prêmio em conferência realizada no canadá modelo matemático é premiado spacer gif por thiago romero agência fapesp deu zebra na ª conferência internacional em computação sem 
+    4   106  subdirA/arq4.txt   71-177 é um concurso internacional realizado anualmente nos estados unidos que premia a capacidade intelectual de uma equipe de cientistas em gerar e analisar dados de biologia molecular na . . . a ganhadora o grupo brasileiro teve como coordenadores os professores junior barrera do departamento de ciência da computação do instituto de matemática e estatística mac ime usp e hernando 
+[user@local] ./mirs.py -o 4 -v diretório/ prêmio internacional ime
+Instruções de exclusão tomadas de diretório/mira.rem
+MIR (My Information Retrieval System) de atualização dinâmica ('diretório/mir.pickle', 'diretório/mira.pickle')
+MIR (My Information Retrieval System) de diretório/mir.pickle
+com 1207 termos e 7 documentos
+MIR (My Information Retrieval System) de diretório/mira.pickle
+com 617 termos e 3 documentos
+Arquivos caducados ou removidos: 2
+Índice conjugado com 1304 termos e 8 documentos
+
+Conjunção das listas de incidência dos 3 termos seguintes.
+   DF  Termo/Token     Lista de incidência com IDs dos arquivos
+    4  prêmio          [2, 4, 5, 9]
+    4  internacional   [2, 4, 5, 7]
+    7  ime             [2, 3, 4, 5, 6, 7, 9]
+São 3 os documentos com os 3 termos
+Lista posicional principal com 6942 posições carregada
+Lista posicional auxiliar com 2201 posições carregada
+    2     1  arq2.txt   8-9 ime usp ganha prêmio internacional em matemática agência 
+    4    17  subdirA/arq4.txt   54-71 usp brasileiros ganham prêmio inédito spacer gif agência fapesp o critical assessment of microarray data analysis camda é um concurso internacional realizado anualmente nos 
+    5    19  subdirC/arq6.txt   84-103 na ª conferência internacional em computação sem fio e móvel redes e comunicações wimob em montreal no canadá um brasileiro levou o prêmio de melhor artigo 
+[user@local] 
+[user@local]
