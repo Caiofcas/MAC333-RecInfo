@@ -196,7 +196,7 @@ def buildReverseIndex(files, rootdir, encoding_dic, instructions):
 def buildAuxiliaryIndex(args):
     current_time = time.time()
 
-    old_filelist, old_index, old_encoding_d, old_time = unpickle(
+    old_filelist, old_index, old_encoding_d, _ = unpickle(
         args.dir, out=False)
 
     old_size = len(old_filelist)
@@ -210,25 +210,72 @@ def buildAuxiliaryIndex(args):
         .format(args.dir, termos, old_size))
 
     filelist = getFileList(args.dir, {})
+
     new_size = len(filelist)
 
-    print("Agora foram encontrados {} documentos.".format(len(filelist)))
-    print("")
+    print("Agora foram encontrados {} documentos.".format(new_size))
+
     # find diferences
-    diff = {}
+    aux_files = []
+    rm_files = []
+    mod_n = rem_n = new_n = 0
     for fn in filelist:
         if fn in old_filelist:
             file_path = os.path.join(args.dir, fn)
+            # Modificado recentemente
             if old_encoding_d[fn]['modificado'] != os.path.getmtime(file_path):
-                diff[fn] = 'modificado'
+                mod_n += 1
+                print('modificado:', fn)
+                aux_files.append(fn)
         else:
-            diff[fn] = 'novo'
+            print('novo:', fn)
+            aux_files.append(fn)
+            new_n += 1
 
     for fn in old_filelist:
         if not fn in filelist:
-            diff[fn] = 'removido'
+            rem_n += 1
+            rm_files.append(fn)
 
-    print(diff)
+    print(
+        "De {} para {}, foram acrescentados {} arquivos novos e removidos {}.\n"
+        "Permaneceram {} arquivos. Dos quais, {} foram atualizados.\nTemos {} "
+        "arquivos atualizados ou novos a serem indexados no índice auxiliar:"
+        .format(
+            old_size,
+            new_size,
+            new_n,
+            rem_n,
+            old_size - rem_n,
+            mod_n,
+            new_n + mod_n
+        ))
+
+    for c, fn in enumerate(aux_files):
+        print(c, fn)
+    print()
+    aux_encoding_dic = getEncodingDict(aux_files, args.dir, {}, args.v)
+
+    r_index, ntokens = buildReverseIndex(
+        aux_files, args.dir, aux_encoding_dic, {})
+
+    # Save index
+
+    picklefn = '{}/mira.pickle'.format(args.dir)
+    with open(picklefn, 'w+b') as picklefile:
+        pickler = pickle.Pickler(picklefile)
+        pickler.dump('MIR 2.0')
+        pickler.dump(filelist)
+        pickler.dump(r_index)
+        pickler.dump(aux_encoding_dic)
+        pickler.dump(current_time)
+
+    # Print statements
+
+    print("Os {} documentos foram processados e produziram um total de "
+          "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
+          "Informações salvas em {} para carga via pickle."
+          .format(len(filelist), ntokens, len(r_index.keys()), picklefn))
 
 
 def buildMainIndex(args):
