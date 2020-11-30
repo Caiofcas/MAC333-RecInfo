@@ -95,6 +95,10 @@ def removeDeletedFiles(filelist, r_index, rootdir):
         rm_files = [line.split()[-1] for line in handle.readlines()]
 
     rm_ind = [filelist.index(x) for x in rm_files]
+
+    # Code to remove files in "mira.rem" from filelist, but this
+    # has behaviour incompatible with examples
+
     # new_filelist = [fn for fn in filelist if not fn in rm_files]
     # mapping = {filelist.index(fn): new_filelist.index(fn)
     #            for fn in new_filelist}
