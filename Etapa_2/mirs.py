@@ -2,6 +2,7 @@
 import argparse
 import re
 import pickle
+import os
 from collections import Counter
 
 # DEBUG = True
@@ -44,7 +45,7 @@ def unpickle(rootdir, out=True, ind_name='mir'):
 
     if out:
         print("MIR (My Information Retrieval System) de {}\n"
-              "com {} termos e {} documentos\n".format(
+              "com {} termos e {} documentos".format(
                   picklefn,
                   len(r_index),
                   len(filelist)
@@ -68,6 +69,34 @@ def printEndMsg(args, top_tokens: int, docs_size: int):
         end_msg += "ordenados decrescentemente por freq. de documento(DF)."
 
     print(end_msg)
+
+
+def printStartMsg(rootdir, aux, rem):
+    if rem:
+        print("Instruções de exclusão ao indexador tomadas de "
+              "{}/mira.rem".format(rootdir))
+    if aux:
+        print("MIR (My Information Retrieval System) de atualização"
+              " dinâmica ('{0}/mir.pickle', "
+              "'{0}/mira.pickle')".format(rootdir))
+
+
+def loadCombinedIndex(args):
+    hasAux = os.path.isfile(os.path.join(args.dir, 'mira.pickle'))
+    hasRem = os.path.isfile(os.path.join(args.dir, 'mira.rem'))
+
+    printStartMsg(args.dir, hasAux, hasRem)
+    filelist, r_index, _, _ = unpickle(args.dir)
+
+    if hasAux:
+        aux_filelist, aux_index, _, _ = unpickle(args.dir, ind_name='mira')
+    if hasRem:
+        with open('{}/mira.rem'.format(args.dir), 'r') as handle:
+            rm_files = [line.split()[-1] for line in handle.readlines()]
+
+    # Combine
+
+    return filelist, r_index
 
 
 def filterTokens(args, counter: Counter, out: bool = True):
@@ -125,7 +154,7 @@ if __name__ == "__main__":
     if DEBUG:
         print(args)
 
-    filelist, r_index, enconding_dic, index_time = unpickle(args.dir)
+    filelist, r_index = loadCombinedIndex(args)
 
     tokens = [x for x in r_index.keys()]
     tokens.sort()
