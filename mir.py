@@ -8,7 +8,7 @@ import re
 import argparse
 import time
 
-from mirs import unpickle
+from mirs import unpickle, getIndex
 # DEBUG = True
 DEBUG = False
 
@@ -178,6 +178,7 @@ def getTokens(fn, rootdir, enc):
             word.lower()
             for line in handle
             for word in resplit.split(line)
+            if word != ''
         )
 
         for i, token in enumerate(words_gen):
@@ -187,27 +188,42 @@ def getTokens(fn, rootdir, enc):
                     token_pos[token] = [i]
                 else:
                     token_freq[token] += 1
-                    token_pos.append(i)
+                    token_pos[token].append(i)
 
     return token_freq, token_pos
 
 
 def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
     r_index = {}  # token : list of (fileID, freq, pos_ini)
-    position_list = []
-
+    positions = {}  # (token,doc_id) : list of positions of token in doc
     n_tokens = 0
 
     for c, fn in enumerate(files):
         enc = encoding_dic[fn]
         token_freq, token_pos = getTokens(fn, rootdir, enc)
         n_tokens += sum(token_freq.values())
-
         for t in token_freq.keys():
+            positions[(t, c)] = token_pos[t]
             if r_index.get(t) is None:
-                r_index[t] = [(c, token_freq[t], token_pos[t])]
+                r_index[t] = [(c, token_freq[t])]
             else:
-                r_index[t].append((c, token_freq[t], token_pos[t]))
+                r_index[t].append((c, token_freq[t]))
+
+    # Build position list and update reverse index
+    position_list = []
+
+    for tok, doc_id in sorted([x for x in positions.keys()]):
+        ind = getIndex(r_index[tok], doc_id)
+        r_index[tok][ind] = (
+            r_index[tok][ind][0],
+            r_index[tok][ind][1],
+            len(position_list)
+        )
+
+        position_list += positions[(tok, doc_id)]
+
+    print(position_list)
+    print(r_index)
 
     # Save position list
     picklefn = '{}/{}p.pickle'.format(args.dir, index_name)
