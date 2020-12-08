@@ -16,6 +16,8 @@ def getArgs():
     parser.add_argument('dir', help='directory to be processed')
     parser.add_argument('-t', type=int,
                         help='Print the <t> most common tokens')
+    parser.add_argument('-o', type=int, default=0,
+                        help='Order to be used when displaying results')
     parser.add_argument('-r', type=re.compile,
                         help='Print tokens that match the regex passed')
     parser.add_argument('-R', type=re.compile,
