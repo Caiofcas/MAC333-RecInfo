@@ -331,6 +331,9 @@ if __name__ == "__main__":
 
     args = parseArgs()
 
+    if args.dir[-1] == '/':
+        args.dir = args.dir[:-1]
+
     if args.auxiliary:
         buildAuxiliaryIndex(args, start_time)
     else:
@@ -349,9 +352,9 @@ if __name__ == "__main__":
         # Get encoding dict for all files:
 
         encoding_dic = getEncodingDict(
-            filelist, args.dir, instructions, args.v)
+            filelist, args.dir.replace('/',), instructions, args.v)
 
         # Construct index
-
+        str.replace()
         r_index, ntokens = buildReverseIndex(
             filelist, args.dir, encoding_dic, 'mir', start_time, args.v)
