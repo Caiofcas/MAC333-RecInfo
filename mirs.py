@@ -223,6 +223,9 @@ if __name__ == "__main__":
 
     args = getArgs()
 
+    if args.dir[-1] == '/':
+        args.dir = args.dir[:-1]
+
     if DEBUG:
         print(args)
 
