@@ -1,4 +1,5 @@
-test1
 *.tgz
-Etapa_1/*diretório
 *.zip
+*.pickle
+*.cpython
+teste
