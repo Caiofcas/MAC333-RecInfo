@@ -162,7 +162,6 @@ def getEncodingDict(filelist, rootdir, instructions, verborragic):
 
 
 def getTokens(fn, rootdir, enc):
-    token_freq = {}
     file_path = os.path.join(rootdir, fn)
 
     encoding = enc['encoding']
@@ -170,6 +169,9 @@ def getTokens(fn, rootdir, enc):
     myerr = enc['errors']
 
     n_tokens = 0
+    token_freq = {}
+    token_pos = {}
+
     with open(file_path, 'r', encoding=encoding, errors=myerr) as handle:
 
         words_gen = (
@@ -178,33 +180,42 @@ def getTokens(fn, rootdir, enc):
             for word in resplit.split(line)
         )
 
-        for token in words_gen:
+        for i, token in enumerate(words_gen):
             if token != '':
                 if token_freq.get(token) is None:
                     token_freq[token] = 1
+                    token_pos[token] = [i]
                 else:
                     token_freq[token] += 1
+                    token_pos.append(i)
 
-    return token_freq
+    return token_freq, token_pos
 
 
 def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
-    r_index = {}  # token : list of (fileID, freq)
+    r_index = {}  # token : list of (fileID, freq, pos_ini)
+    position_list = []
+
     n_tokens = 0
 
     for c, fn in enumerate(files):
         enc = encoding_dic[fn]
-        token_freq = getTokens(fn, rootdir, enc)
+        token_freq, token_pos = getTokens(fn, rootdir, enc)
         n_tokens += sum(token_freq.values())
 
         for t in token_freq.keys():
             if r_index.get(t) is None:
-                r_index[t] = [(c, token_freq[t])]
+                r_index[t] = [(c, token_freq[t], token_pos[t])]
             else:
-                r_index[t].append((c, token_freq[t]))
+                r_index[t].append((c, token_freq[t], token_pos[t]))
+
+    # Save position list
+    picklefn = '{}/{}p.pickle'.format(args.dir, index_name)
+    with open(picklefn, 'w+b') as picklefile:
+        pickler = pickle.Pickler(picklefile)
+        pickler.dump(position_list)
 
     # Save index
-
     picklefn = '{}/{}.pickle'.format(args.dir, index_name)
     with open(picklefn, 'w+b') as picklefile:
         pickler = pickle.Pickler(picklefile)
