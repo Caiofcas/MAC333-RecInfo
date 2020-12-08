@@ -16,7 +16,7 @@ def getArgs():
     parser.add_argument('dir', help='directory to be processed')
     parser.add_argument('-t', type=int,
                         help='Print the <t> most common tokens')
-    parser.add_argument('-o', type=int, default=0,
+    parser.add_argument('-o', '--order', type=int, default=0,
                         help='Order to be used when displaying results')
     parser.add_argument('-r', type=re.compile,
                         help='Print tokens that match the regex passed')
@@ -228,6 +228,17 @@ def filterTokens(args, counter: Counter, out: bool = True):
     return counter_filtered
 
 
+def sortDocuments(mode, documents, tokens):
+
+    print("São {} os documentos com os {} termos"
+          .format(len(documents), len(tokens)))
+    if mode == 0:
+        for i, fn in documents:
+            print("\t{:2d}\t{}".format(i, fn))
+    else:
+        print('Ordenação {} não implementada ainda'.format(mode))
+
+
 if __name__ == "__main__":
 
     args = getArgs()
@@ -268,11 +279,13 @@ if __name__ == "__main__":
 
         args.tokens[0].sort(reverse=True)
 
+        tokens = []
         for tok in args.tokens[0]:
             ind = r_index.get(tok)
             if ind is not None:
                 print('\t{:2d}\t{: <10}\t{}'.format(
                     counter[tok], tok, [x[0] for x in r_index[tok]]))
+                tokens.append(tok)
             else:
                 print('\tToken {} não encontrado.'.format(tok))
 
@@ -282,12 +295,8 @@ if __name__ == "__main__":
                 any([
                     i == c
                     for c, _, _ in r_index[tok]])
-                for tok in args.tokens[0]
+                for tok in tokens
             ]):
                 docs.append((i, fn))
 
-        print("São {} os documentos com os {} termos"
-              .format(len(docs), len(args.tokens[0])))
-
-        for i, fn in docs:
-            print("\t{:2d}\t{}".format(i, fn))
+        sortDocuments(args.order, docs, tokens)
