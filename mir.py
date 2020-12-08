@@ -185,7 +185,7 @@ def getTokens(fn, rootdir, enc):
                 else:
                     token_freq[token] += 1
 
-    return token_freq, encoding
+    return token_freq
 
 
 def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
@@ -194,7 +194,7 @@ def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
 
     for c, fn in enumerate(files):
         enc = encoding_dic[fn]
-        token_freq, enc = getTokens(fn, rootdir, enc)
+        token_freq = getTokens(fn, rootdir, enc)
         n_tokens += sum(token_freq.values())
 
         for t in token_freq.keys():
