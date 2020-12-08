@@ -193,7 +193,7 @@ def getTokens(fn, rootdir, enc):
     return token_freq, token_pos
 
 
-def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
+def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time, verborragic):
     r_index = {}  # token : list of (fileID, freq, pos_ini)
     positions = {}  # (token,doc_id) : list of positions of token in doc
     n_tokens = 0
@@ -222,8 +222,14 @@ def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time):
 
         position_list += positions[(tok, doc_id)]
 
-    print(position_list)
-    print(r_index)
+    if verborragic:
+        print('\nFirst 20(or less) positions of position list:')
+        print(position_list[:20], '...')
+        print('\nFirst tokens of Reverse Index')
+        for i, tok in enumerate(r_index):
+            print('{}: {}'.format(tok, r_index[tok]))
+            if i > 20:
+                break
 
     # Save position list
     picklefn = '{}/{}p.pickle'.format(args.dir, index_name)
@@ -311,7 +317,7 @@ def buildAuxiliaryIndex(args, current_time):
     aux_encoding_dic = getEncodingDict(aux_files, args.dir, {}, args.v)
 
     r_index, ntokens = buildReverseIndex(
-        aux_files, args.dir, aux_encoding_dic, 'mira', current_time)
+        aux_files, args.dir, aux_encoding_dic, 'mira', current_time, args.v)
 
     with open('{}/mira.rem'.format(args.dir), 'w+') as handle:
         handle.writelines(['@x {}'.format(fn) for fn in rm_files])
@@ -348,4 +354,4 @@ if __name__ == "__main__":
         # Construct index
 
         r_index, ntokens = buildReverseIndex(
-            filelist, args.dir, encoding_dic, 'mir', start_time)
+            filelist, args.dir, encoding_dic, 'mir', start_time, args.v)
