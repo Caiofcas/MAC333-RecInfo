@@ -113,11 +113,11 @@ def removeDeletedFiles(filelist, r_index, rootdir):
 
     for tok in r_index:
         l = r_index[tok]
-        l = [(file_c, count)
-             for (file_c, count) in l if not file_c in rm_ind]
+        l = [(file_c, count, ini)
+             for (file_c, count, ini) in l if not file_c in rm_ind]
         r_index[tok] = l
 
-    return filelist, r_index
+    return filelist, r_index, len(rm_ind)
 
 
 def combineIndexes(main_fl, main_rind, aux_fl, aux_rind):
@@ -158,15 +158,24 @@ def loadCombinedIndex(args):
     hasRem = os.path.isfile(os.path.join(args.dir, 'mira.rem'))
 
     printStartMsg(args.dir, hasAux, hasRem)
+
     filelist, r_index, _, _ = unpickle(args.dir)
 
     if hasRem:
-        filelist, r_index = removeDeletedFiles(filelist, r_index, args.dir)
+        filelist, r_index, removed_count = removeDeletedFiles(
+            filelist, r_index, args.dir)
 
     if hasAux:
         aux_filelist, aux_index, _, _ = unpickle(args.dir, ind_name='mira')
+
+        removed_count += len([x for x in filelist if x in aux_filelist])
+
         filelist, r_index = combineIndexes(
             filelist, r_index, aux_filelist, aux_index)
+
+    print('Arquivos caducados ou removidos: {}'.format(removed_count))
+    print('Indice conjugado com {} termos e {} documentos'.format(
+        len(r_index), len(filelist)))
 
     return filelist, r_index
 
@@ -272,7 +281,7 @@ if __name__ == "__main__":
             if all([
                 any([
                     i == c
-                    for c, _ in r_index[tok]])
+                    for c, _, _ in r_index[tok]])
                 for tok in args.tokens[0]
             ]):
                 docs.append((i, fn))
