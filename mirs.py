@@ -5,6 +5,9 @@ import pickle
 import os
 from collections import Counter
 import math
+import re
+
+resplit = re.compile(r'[\W\d_\s]+')
 
 # DEBUG = True
 DEBUG = False
@@ -24,6 +27,9 @@ def getArgs():
                              '\t 2 = Quase-TF-IDF;\n'
                              '\t 3 = X;\n'
                              '\t 4 = X (2 menores DF);\n')
+
+    parser.add_argument('-v', action='store_true',
+                        help='print verborragic information for debugging purposes')
 
     parser.add_argument('-r', type=re.compile,
                         help='Print tokens that match the regex passed')
@@ -311,13 +317,33 @@ def posDif(x):
     return int(abs(x[0]-x[1]))
 
 
-def readInterval(flag, interval, filename):
+def readInterval(flag, interval, filepath, enc):
     if not flag:
         return ''
-    return 'Not implemented'
+
+    start = min(interval) - 3
+    end = max(interval) + 3
+
+    string = ''
+    with open(filepath, 'r', encoding=enc) as handle:
+        words_gen = (
+            word.lower()
+            for line in handle
+            for word in resplit.split(line)
+            if word != ''
+        )
+
+        for i, token in enumerate(words_gen):
+            if i >= start and i <= end:
+                string += token+' '
+            elif i > end:
+                break
+
+    return string
 
 
-def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir, verbose=False):
+def sortDocuments(mode, documents, tokens, r_index, filelist,
+                  rootdir, verbose):
 
     print("São {} os documentos com os {} termos"
           .format(len(documents), len(tokens)))
@@ -339,8 +365,9 @@ def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir, verbose=F
                   format(doc_id, tf_idf_sum[i], fn))
         return
 
-    main_fl, main_index, _, _ = unpickle(rootdir, out=False)
-    aux_fl, aux_index, _, _ = unpickle(rootdir, out=False, ind_name='mira')
+    main_fl, main_index, main_enc, _ = unpickle(rootdir, out=False)
+    aux_fl, aux_index, aux_enc, _ = unpickle(
+        rootdir, out=False, ind_name='mira')
 
     if mode == 2:
         tf_idf_sum = [
@@ -361,9 +388,11 @@ def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir, verbose=F
         d = {}
         for _, fn in documents:
             if fn in aux_fl:
+                d[fn+'enc'] = aux_enc[fn]['encoding']
                 distances = getTermDistances(
                     tokens, aux_fl.r_index(fn), aux_index, aux_posl)
             else:
+                d[fn+'enc'] = main_enc[fn]['encoding']
                 distances = getTermDistances(
                     tokens, main_fl.index(fn), main_index, main_posl)
 
@@ -374,7 +403,10 @@ def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir, verbose=F
             print(
                 "\t{:2d}\t{:2d}\t{}\t{}".
                 format(doc_id, posDif(d[fn]), fn,
-                       readInterval(verbose, d[fn], fn)
+                       readInterval(
+                           verbose, d[fn],
+                           os.path.join(rootdir, fn),
+                           d[fn+'enc'])
                        )
             )
 
@@ -439,4 +471,5 @@ if __name__ == "__main__":
             ]):
                 docs.append((i, fn))
 
-        sortDocuments(args.order, docs, tokens, r_index, filelist, args.dir)
+        sortDocuments(args.order, docs, tokens, r_index,
+                      filelist, args.dir, args.v)
