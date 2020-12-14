@@ -235,10 +235,6 @@ def filterTokens(args, counter: Counter, out: bool = True):
     return counter_filtered
 
 
-# def IDF(token, r_index, N):
-#     return
-
-
 def TF_IDF(doc_id, token, filelist, occ_list):
     ind = getIndex(occ_list, doc_id)
 
@@ -247,7 +243,25 @@ def TF_IDF(doc_id, token, filelist, occ_list):
     return tf * math.log10((len(filelist)-1)/len(occ_list))
 
 
-def sortDocuments(mode, documents, tokens, r_index, filelist):
+def Quase_TF_IDF(doc_id, token, main_fl, aux_fl, main_ocl, aux_ocl):
+    freq = 0
+
+    ind = getIndex(main_ocl, doc_id)
+    if ind != -1:
+        freq += main_ocl[ind][1]
+    ind = getIndex(aux_ocl, doc_id)
+
+    if ind != -1:
+        freq += aux_ocl[ind][1]
+
+    tf = 1 + math.log10(freq)
+
+    q_df = (len(main_fl)+len(aux_fl))/(len(main_ocl) + len(aux_ocl))
+
+    return tf * math.log10(q_df)
+
+
+def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir):
 
     print("São {} os documentos com os {} termos"
           .format(len(documents), len(tokens)))
@@ -267,7 +281,20 @@ def sortDocuments(mode, documents, tokens, r_index, filelist):
             print("\t{:2d}\t{:.2f}\t{}".
                   format(doc_id, tf_idf_sum[i], fn))
     elif mode == 2:
-        print('o')
+
+        main_fl, main_index, _, _ = unpickle(rootdir, out=False)
+        aux_fl, aux_index, _, _ = unpickle(rootdir, out=False, ind_name='mira')
+
+        tf_idf_sum = [
+            sum([Quase_TF_IDF(doc[0], tok, main_fl, aux_fl,
+                              main_index[tok], aux_index[tok])
+                 for tok in tokens])
+            for doc in documents
+        ]
+
+        for i, (doc_id, fn) in enumerate(documents):
+            print("\t{:2d}\t{:.2f}\t{}".
+                  format(doc_id, tf_idf_sum[i], fn))
     else:
         print('Ordenação {} não implementada ainda'.format(mode))
 
@@ -332,4 +359,4 @@ if __name__ == "__main__":
             ]):
                 docs.append((i, fn))
 
-        sortDocuments(args.order, docs, tokens, r_index, filelist)
+        sortDocuments(args.order, docs, tokens, r_index, filelist, args.dir)
