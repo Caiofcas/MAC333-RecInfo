@@ -70,6 +70,24 @@ def unpickle(rootdir, out=True, ind_name='mir'):
     return filelist, r_index, encoding_dic, index_time
 
 
+def loadPositionLists(rootdir, out=True):
+    picklefn = '{}/mirp.pickle'.format(rootdir)
+
+    with open(picklefn, 'rb') as handle:
+        unpickler = pickle.Unpickler(handle)
+        main_pl = unpickler.load()
+        print('Lista posicional principal com {} posições carregada'.format(len(main_pl)))
+
+    picklefn = '{}/mirap.pickle'.format(rootdir)
+
+    with open(picklefn, 'rb') as handle:
+        unpickler = pickle.Unpickler(handle)
+        aux_pl = unpickler.load()
+        print('Lista posicional auxiliar com {} posições carregada'.format(len(aux_pl)))
+
+    return main_pl, aux_pl
+
+
 def printEndMsg(args, top_tokens: int, docs_size: int):
     if args.r is not None:
         end_msg = "Acima estão os {} tokens mais ".format(top_tokens)
@@ -261,7 +279,45 @@ def Quase_TF_IDF(doc_id, token, main_fl, aux_fl, main_ocl, aux_ocl):
     return tf * math.log10(q_df)
 
 
-def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir):
+def getTermDistances(tokens, doc_id, r_index, pos_list):
+    d = {}  # (t,u) : [pos(t),pos(u)] smallest distance between t and u
+
+    for i in range(len(tokens)-1):
+        t, u = tokens[i], tokens[i+1]
+        t_freq, t_start = r_index[t][getIndex(r_index[t], doc_id)][1:]
+        u_freq, u_start = r_index[u][getIndex(r_index[u], doc_id)][1:]
+        min_dist = float('inf')
+        min_pos = (-1, -1)
+        # print(t, u)
+        for j in range(t_start, t_start+t_freq, 1):
+            for k in range(u_start, u_start+u_freq, 1):
+                t_pos = pos_list[j]
+                u_pos = pos_list[k]
+
+                # print('-- ', t_pos, u_pos)
+                dist = abs(t_pos - u_pos)
+
+                if dist < min_dist:
+                    min_dist = dist
+                    min_pos = (t_pos, u_pos)
+                    # print(min_pos)
+
+        d[(t, u)] = min_pos
+
+    return d
+
+
+def posDif(x):
+    return int(abs(x[0]-x[1]))
+
+
+def readInterval(flag, interval, filename):
+    if not flag:
+        return ''
+    return 'Not implemented'
+
+
+def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir, verbose=False):
 
     print("São {} os documentos com os {} termos"
           .format(len(documents), len(tokens)))
@@ -269,8 +325,9 @@ def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir):
     if mode == 0:
         for i, fn in documents:
             print("\t{:2d}\t{}".format(i, fn))
+        return
 
-    elif mode == 1:
+    if mode == 1:
         tf_idf_sum = [
             sum([TF_IDF(doc[0], tok, filelist, r_index[tok])
                  for tok in tokens])
@@ -280,11 +337,12 @@ def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir):
         for i, (doc_id, fn) in enumerate(documents):
             print("\t{:2d}\t{:.2f}\t{}".
                   format(doc_id, tf_idf_sum[i], fn))
-    elif mode == 2:
+        return
 
-        main_fl, main_index, _, _ = unpickle(rootdir, out=False)
-        aux_fl, aux_index, _, _ = unpickle(rootdir, out=False, ind_name='mira')
+    main_fl, main_index, _, _ = unpickle(rootdir, out=False)
+    aux_fl, aux_index, _, _ = unpickle(rootdir, out=False, ind_name='mira')
 
+    if mode == 2:
         tf_idf_sum = [
             sum([Quase_TF_IDF(doc[0], tok, main_fl, aux_fl,
                               main_index[tok], aux_index[tok])
@@ -295,8 +353,30 @@ def sortDocuments(mode, documents, tokens, r_index, filelist, rootdir):
         for i, (doc_id, fn) in enumerate(documents):
             print("\t{:2d}\t{:.2f}\t{}".
                   format(doc_id, tf_idf_sum[i], fn))
-    else:
-        print('Ordenação {} não implementada ainda'.format(mode))
+        return
+
+    main_posl, aux_posl = loadPositionLists(rootdir)
+
+    if mode == 4:
+        d = {}
+        for _, fn in documents:
+            if fn in aux_fl:
+                distances = getTermDistances(
+                    tokens, aux_fl.r_index(fn), aux_index, aux_posl)
+            else:
+                distances = getTermDistances(
+                    tokens, main_fl.index(fn), main_index, main_posl)
+
+            d[fn] = min(distances.items(),
+                        key=lambda x: posDif(x[1]))[1]
+
+        for doc_id, fn in documents:
+            print(
+                "\t{:2d}\t{:2d}\t{}\t{}".
+                format(doc_id, posDif(d[fn]), fn,
+                       readInterval(verbose, d[fn], fn)
+                       )
+            )
 
 
 if __name__ == "__main__":
