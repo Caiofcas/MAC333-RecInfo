@@ -6,6 +6,7 @@ import os
 from collections import Counter
 import math
 import re
+from queue import PriorityQueue
 
 resplit = re.compile(r'[\W\d_\s]+')
 
@@ -259,7 +260,8 @@ def filterTokens(args, counter: Counter, out: bool = True):
     return counter_filtered
 
 
-def TF_IDF(doc_id, token, filelist, occ_list):
+def TF_IDF(doc_id, token,
+           filelist, occ_list):
     ind = getIndex(occ_list, doc_id)
 
     tf = 1 + math.log10(occ_list[ind][1])
@@ -313,6 +315,45 @@ def getTermDistances(tokens, doc_id, r_index, pos_list):
     return d
 
 
+def joinIntervals(distances, tokens):
+    # options = [k for k in distances.keys()]
+    # options.sort(lambda k: posDif(distances[k]))
+    # results = []
+    q = PriorityQueue()
+    for k, v in distances.items():
+        q.put((posDif(v), set(k), v))
+
+    while not q.empty():
+        _, tok, interval = q.get()
+        if all([(t in tok) for t in tokens]):
+            return interval
+
+        t = ''
+        for i in tokens:
+            if not i in tok:
+                t = i
+
+        # add t to this item
+
+        val = None
+        for x in tok:
+            val = distances.get((x, t))
+            if val is not None:
+                break
+            val = distances.get((t, x))
+            if val is not None:
+                break
+
+        interval = (
+            min(min(interval), min(val)),
+            max(max(interval), max(val))
+        )
+        tok.add(t)
+        q.put((posDif(interval), tok, interval))
+
+    return
+
+
 def posDif(x):
     return int(abs(x[0]-x[1]))
 
@@ -350,6 +391,9 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
 
     print("São {} os documentos com os {} termos"
           .format(len(documents), len(tokens)))
+
+    if mode < 0 or mode > 4:
+        print('WRONG VALUE FOR -o')
 
     if mode == 0:
         for i, fn in documents:
@@ -389,7 +433,10 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
 
     if mode == 4:
         # Filter tokens
-        tokens = tokens
+        tokens.sort(key=lambda tok: len(r_index[tok]))
+        tokens = tokens[:2]
+        # print(tokens)
+
     d = {}
     for _, fn in documents:
         if fn in aux_fl:
@@ -401,11 +448,19 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
             distances = getTermDistances(
                 tokens, main_fl.index(fn), main_index, main_posl)
 
-        d[fn] = min(distances.items(),
-                    key=lambda x: posDif(x[1]))[1]
+        # d[fn] = min(distances.items(),
+        #             key=lambda x: posDif(x[1]))[1]
+        d[fn] = distances
 
-    # if mode == 3:
-        # Join all tokens
+    if mode == 3:
+        print('o')
+        # Join all token distances
+        for _, fn in documents:
+            d[fn] = joinIntervals(d[fn], tokens)
+
+    else:
+        for _, fn in documents:
+            d[fn] = min(d[fn].items(), key=lambda x: posDif(x[1]))[1]
 
     for doc_id, fn in documents:
         print(
