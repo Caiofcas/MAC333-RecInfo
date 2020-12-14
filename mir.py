@@ -352,9 +352,8 @@ if __name__ == "__main__":
         # Get encoding dict for all files:
 
         encoding_dic = getEncodingDict(
-            filelist, args.dir.replace('/',), instructions, args.v)
+            filelist, args.dir, instructions, args.v)
 
         # Construct index
-        str.replace()
         r_index, ntokens = buildReverseIndex(
             filelist, args.dir, encoding_dic, 'mir', start_time, args.v)
