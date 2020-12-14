@@ -244,7 +244,7 @@ def TF_IDF(doc_id, token, filelist, occ_list):
 
     tf = 1 + math.log10(occ_list[ind][1])
 
-    return tf * math.log10(len(filelist)/len(occ_list))
+    return tf * math.log10((len(filelist)-1)/len(occ_list))
 
 
 def sortDocuments(mode, documents, tokens, r_index, filelist):
@@ -256,7 +256,7 @@ def sortDocuments(mode, documents, tokens, r_index, filelist):
         for i, fn in documents:
             print("\t{:2d}\t{}".format(i, fn))
 
-    if mode == 1:
+    elif mode == 1:
         tf_idf_sum = [
             sum([TF_IDF(doc[0], tok, filelist, r_index[tok])
                  for tok in tokens])
@@ -266,6 +266,8 @@ def sortDocuments(mode, documents, tokens, r_index, filelist):
         for i, (doc_id, fn) in enumerate(documents):
             print("\t{:2d}\t{:.2f}\t{}".
                   format(doc_id, tf_idf_sum[i], fn))
+    elif mode == 2:
+        print('o')
     else:
         print('Ordenação {} não implementada ainda'.format(mode))
 
