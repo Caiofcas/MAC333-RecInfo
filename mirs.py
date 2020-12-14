@@ -321,10 +321,13 @@ def readInterval(flag, interval, filepath, enc):
     if not flag:
         return ''
 
-    start = min(interval) - 3
-    end = max(interval) + 3
+    start = min(interval)
+    end = max(interval)
 
-    string = ''
+    string = '{}-{} '.format(start+1, end+1)
+
+    start -= 3
+    end += 3
     with open(filepath, 'r', encoding=enc) as handle:
         words_gen = (
             word.lower()
@@ -385,30 +388,35 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
     main_posl, aux_posl = loadPositionLists(rootdir)
 
     if mode == 4:
-        d = {}
-        for _, fn in documents:
-            if fn in aux_fl:
-                d[fn+'enc'] = aux_enc[fn]['encoding']
-                distances = getTermDistances(
-                    tokens, aux_fl.r_index(fn), aux_index, aux_posl)
-            else:
-                d[fn+'enc'] = main_enc[fn]['encoding']
-                distances = getTermDistances(
-                    tokens, main_fl.index(fn), main_index, main_posl)
+        # Filter tokens
+        tokens = tokens
+    d = {}
+    for _, fn in documents:
+        if fn in aux_fl:
+            d[fn+'enc'] = aux_enc[fn]['encoding']
+            distances = getTermDistances(
+                tokens, aux_fl.r_index(fn), aux_index, aux_posl)
+        else:
+            d[fn+'enc'] = main_enc[fn]['encoding']
+            distances = getTermDistances(
+                tokens, main_fl.index(fn), main_index, main_posl)
 
-            d[fn] = min(distances.items(),
-                        key=lambda x: posDif(x[1]))[1]
+        d[fn] = min(distances.items(),
+                    key=lambda x: posDif(x[1]))[1]
 
-        for doc_id, fn in documents:
-            print(
-                "\t{:2d}\t{:2d}\t{}\t{}".
-                format(doc_id, posDif(d[fn]), fn,
-                       readInterval(
-                           verbose, d[fn],
-                           os.path.join(rootdir, fn),
-                           d[fn+'enc'])
-                       )
+    # if mode == 3:
+        # Join all tokens
+
+    for doc_id, fn in documents:
+        print(
+            "\t{:2d}\t{:2d}\t{}\t{}".
+            format(doc_id, posDif(d[fn]), fn,
+                   readInterval(
+                verbose, d[fn],
+                os.path.join(rootdir, fn),
+                d[fn+'enc'])
             )
+        )
 
 
 if __name__ == "__main__":
