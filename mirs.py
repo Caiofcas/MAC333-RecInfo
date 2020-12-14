@@ -17,7 +17,13 @@ def getArgs():
     parser.add_argument('-t', type=int,
                         help='Print the <t> most common tokens')
     parser.add_argument('-o', '--order', type=int, default=0,
-                        help='Order to be used when displaying results')
+                        help='Order to be used when displaying results:\n'
+                             '\t 0 = Internal Order;\n'
+                             '\t 1 = TF-IDF;\n'
+                             '\t 2 = Quase-TF-IDF;\n'
+                             '\t 3 = X;\n'
+                             '\t 4 = X (2 menores DF);\n')
+
     parser.add_argument('-r', type=re.compile,
                         help='Print tokens that match the regex passed')
     parser.add_argument('-R', type=re.compile,
