@@ -232,8 +232,8 @@ def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time, verbor
                 break
 
     # Save position list
-    picklefn = '{}/{}p.pickle'.format(args.dir, index_name)
-    with open(picklefn, 'w+b') as picklefile:
+    picklefn_pl = '{}/{}p.pickle'.format(args.dir, index_name)
+    with open(picklefn_pl, 'w+b') as picklefile:
         pickler = pickle.Pickler(picklefile)
         pickler.dump(position_list)
 
@@ -253,7 +253,8 @@ def buildReverseIndex(files, rootdir, encoding_dic, index_name, ind_time, verbor
           "{} tokens, que usaram um vocabulário com {} tokens distintos.\n"
           "Informações salvas em {} para carga via pickle."
           .format(len(files), n_tokens, len(r_index.keys()), picklefn))
-
+    print("Salvas um total de {} posições na lista geral de posições"
+          "{}".format(len(position_list), picklefn_pl))
     return r_index, n_tokens
 
 
