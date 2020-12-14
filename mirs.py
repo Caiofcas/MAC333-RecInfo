@@ -316,9 +316,7 @@ def getTermDistances(tokens, doc_id, r_index, pos_list):
 
 
 def joinIntervals(distances, tokens):
-    # options = [k for k in distances.keys()]
-    # options.sort(lambda k: posDif(distances[k]))
-    # results = []
+
     q = PriorityQueue()
     for k, v in distances.items():
         q.put((posDif(v), set(k), v))
@@ -394,6 +392,7 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
 
     if mode < 0 or mode > 4:
         print('WRONG VALUE FOR -o')
+        exit(1)
 
     if mode == 0:
         for i, fn in documents:
@@ -401,15 +400,15 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
         return
 
     if mode == 1:
-        tf_idf_sum = [
-            sum([TF_IDF(doc[0], tok, filelist, r_index[tok])
-                 for tok in tokens])
-            for doc in documents
-        ]
+        tf_idf_sum = {fn: sum([
+            TF_IDF(doc_id, tok, filelist, r_index[tok])
+            for tok in tokens])
+            for doc_id, fn in documents
+        }
 
-        for i, (doc_id, fn) in enumerate(documents):
+        for doc_id, fn in sorted(documents, key=lambda x: tf_idf_sum[x[1]], reverse=True):
             print("\t{:2d}\t{:.2f}\t{}".
-                  format(doc_id, tf_idf_sum[i], fn))
+                  format(doc_id, tf_idf_sum[fn], fn))
         return
 
     main_fl, main_index, main_enc, _ = unpickle(rootdir, out=False)
@@ -417,16 +416,18 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
         rootdir, out=False, ind_name='mira')
 
     if mode == 2:
-        tf_idf_sum = [
-            sum([Quase_TF_IDF(doc[0], tok, main_fl, aux_fl,
-                              main_index[tok], aux_index[tok])
-                 for tok in tokens])
-            for doc in documents
-        ]
+        tf_idf_sum = {fn: sum([
+            Quase_TF_IDF(doc_id, tok, main_fl, aux_fl,
+                         main_index[tok], aux_index[tok])
+            for tok in tokens])
+            for doc_id, fn in documents
+        }
 
-        for i, (doc_id, fn) in enumerate(documents):
+        # documents = []
+
+        for doc_id, fn in sorted(documents, key=lambda x: tf_idf_sum[x[1]], reverse=True):
             print("\t{:2d}\t{:.2f}\t{}".
-                  format(doc_id, tf_idf_sum[i], fn))
+                  format(doc_id, tf_idf_sum[fn], fn))
         return
 
     main_posl, aux_posl = loadPositionLists(rootdir)
@@ -435,7 +436,6 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
         # Filter tokens
         tokens.sort(key=lambda tok: len(r_index[tok]))
         tokens = tokens[:2]
-        # print(tokens)
 
     d = {}
     for _, fn in documents:
@@ -448,12 +448,9 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
             distances = getTermDistances(
                 tokens, main_fl.index(fn), main_index, main_posl)
 
-        # d[fn] = min(distances.items(),
-        #             key=lambda x: posDif(x[1]))[1]
         d[fn] = distances
 
     if mode == 3:
-        print('o')
         # Join all token distances
         for _, fn in documents:
             d[fn] = joinIntervals(d[fn], tokens)
@@ -462,7 +459,7 @@ def sortDocuments(mode, documents, tokens, r_index, filelist,
         for _, fn in documents:
             d[fn] = min(d[fn].items(), key=lambda x: posDif(x[1]))[1]
 
-    for doc_id, fn in documents:
+    for doc_id, fn in sorted(documents, key=lambda x: posDif(d[x[1]])):
         print(
             "\t{:2d}\t{:2d}\t{}\t{}".
             format(doc_id, posDif(d[fn]), fn,
